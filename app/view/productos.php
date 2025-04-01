@@ -24,11 +24,14 @@ $conn = $conexion->getConexion();
         <div id="barranav">
             <div id="ContainerNav">
                 <div id="Logos">
-                    <img src="../../public/img/Producto/logo.png" width="350px" height="200px" style="padding-left: 10px; padding-top: 0px">
+                    <img src="../../public/img/Producto/logo.png" width="350px" height="200px"
+                        style="padding-left: 10px; padding-top: 0px">
 
                     <form class="form-inline">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Buscar...                                                                               🔎        " style="width: 450px; border-radius: 20px;">
+                            <input type="text" class="form-control"
+                                placeholder="Buscar...                                                                               🔎        "
+                                style="width: 450px; border-radius: 20px;">
                         </div>
                     </form>
                 </div>
@@ -61,14 +64,17 @@ $conn = $conexion->getConexion();
                                 <a href="CreditosInicio.php">
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
+                                <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar
+                                        Sesión</button></a>
 
                                 <a href="./Usuario/carrito_compra.php">
-                                    <li><img src="../../public/img/Carrito.png" width="40px" height="40px" style="margin-top: -18px;">
+                                    <li><img src="../../public/img/Carrito.png" width="40px" height="40px"
+                                            style="margin-top: -18px;">
                                     </li>
                                 </a>
                                 <a href="./Usuario/index_.php">
-                                    <li><img src="../../public/img/home.svg" width="40px" height="40px" style="margin-top: -18px;">
+                                    <li><img src="../../public/img/home.svg" width="40px" height="40px"
+                                            style="margin-top: -18px;">
                                     </li>
                                 </a>
                             <?php } ?>
@@ -172,7 +178,7 @@ $conn = $conexion->getConexion();
                         while ($row = mysqli_fetch_array($resultado)) { ?>
 
                             <div id="div1">
-                                <form action="../PhpJadith/Cruds/Carrito_Guardar_Procutos.php" method="post">
+                                <form action="../controller/controllerCarrito.php" method="post">
                                     <div class="imagenpro">
                                         <img src="<?php echo $row['Img'] ?>" alt="" class="imgpro"><br>
                                     </div>

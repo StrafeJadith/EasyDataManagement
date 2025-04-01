@@ -13,7 +13,11 @@ class Usuario
     }
 
     public function abonoEfectivo($monto, $correo)
-    {
+    {   
+        //?Se crea un array asociativo con valores verdaderos
+        for($i = 0; $i<=6; $i++){
+            $verss["ver$i"] = true;
+        }
 
         //*Consulta de credito
         $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo' AND Estado_ACT = 1";
@@ -24,8 +28,10 @@ class Usuario
 
         //*Se maneja el error sino existe una cuenta credito
         if (!$rowCr) {
-            return $rowCr;
+            $verss["ver0"] = False;
+            return $verss;
         }
+
         $creditoTotal = $rowCr['Valor_Total'];
         $ID_US = $rowCr['ID_US'];
 
@@ -35,10 +41,7 @@ class Usuario
         $abonoMonto = $rowAbono['MontoSuma'];
 
         $estadoCr = "";
-        $ver2 = false;
-        $ver3 = false;
-        $ver4 = false;
-        $ver5 = false;
+        
 
         //*Verificacion de monto apto
         $resp = ($monto % 100 == 0);
@@ -52,18 +55,20 @@ class Usuario
         $ID_Usuario = $rowIdUs["ID_US"];
 
         //*Verificaciones de monto aceptable
-        if ($resp != true) {
-            return $resp;
+        if (!$resp) {
+            $verss["ver1"] = False;
+            return $verss;
         }
 
         if ($valorLimite > $creditoTotal) {
-            return $ver2;
+            $verss["ver2"] = False;
+            $verss["valor"] = $creditoTotal;
+            return $verss;
         }
 
         //*Verificaciones de estado de cuenta
         if ($estadoCr == "En espera") {
-            $_SESSION["msg"] = "error('Credito no Aceptado','Su credito sigue en procceso de admision');";
-            return $ver3;
+            $verss["ver3"] = False;
         }
 
         //*Consulta de credito
@@ -81,7 +86,7 @@ class Usuario
         $result = mysqli_query($this->conn, $query);
 
         if (!$result) {
-            return $ver4;
+            $verss["ver4"] = false;
 
         }
 
@@ -89,12 +94,9 @@ class Usuario
         if ($monto + $abonoMonto == $creditoTotal) {
             $accoff = "UPDATE credito SET Estado_ACT = 0 WHERE Correo_Cr = '$correo'";
             $aresult = mysqli_query($this->conn, $accoff);
-            $ver5 = true;
-            return $ver5;
-
+            $verss["ver5"] = True;
         }
-        $_SESSION["msg"] = "success('¡Enviado exitosamente!','Se han enviado correctamente los datos');";
-        return true;
+
 
     }
 }

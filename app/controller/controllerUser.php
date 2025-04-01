@@ -13,33 +13,33 @@ if (isset($_POST["monto"])) {
 
     $montoUs = $userConn->abonoEfectivo($monto, $correo);
 
-    if (!$rowCr) {
+    if ($montoUs["ver0"] === False) {
         $_SESSION["msg"] = "error('Sin solicitud','No ha solicitado un credito aun.')";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
     }
 
-    if (!$resp) {
+    if ($montoUs["ver1"] === False) {
         $_SESSION["msg"] = "error('Digite un monto aceptable','Solo se aceptan multiplos de 100')";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
     }
-    if (!$ver2) {
-        $_SESSION["msg"] = "error('¡Monto excedido!','el monto limite a pagar es: $creditoTotal')";
+    if ($montoUs["ver2"] === False) {
+        $_SESSION["msg"] = "error('¡Monto excedido!','el monto limite a pagar es:{$montoUs['valor']}')";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
     }
-    if (!$ver3) {
+    if ($montoUs["ver3"] === False) {
         $_SESSION["msg"] = "error('Credito no Aceptado','Su credito sigue en procceso de admision');";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
     }
-    if (!$ver4) {
+    if ($montoUs["ver4"] === False) {
         $_SESSION["msg"] = "error('Error','No se enviaron los datos');";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
     }
-    if ($ver5) {
+    if ($montoUs["ver5"] === True) {
         $_SESSION["msg"] = "success('¡Pagado!','Haz pagado por completo tu credito.')";
         header("location: ../view/Usuario/metodo_abono.php");
         return;
