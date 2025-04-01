@@ -15,27 +15,36 @@ class Carrito
 
     public function guardarProducto($correo, $ID, $nombre, $precio, $cantidad)
     {
+
+        //?Se crea un array asociativo con valores verdaderos
+        for ($i = 0; $i <= 5; $i++) {
+            $verss["ver$i"] = true;
+        }
+
         $query1 = "SELECT cantidad_existente FROM productos WHERE ID_PRO = $ID";
         $resul1 = mysqli_query($this->conn, $query1);
 
 
+        if (empty($cantidad)) {
+            $verss["ver0"] = false;
+            return $verss;
+        }
+
         //!Si la consulta falla
         if (!$resul1) {
-            return $resul1;
+            $verss["ver1"] = false;
+            return $verss;
         }
 
         $row = $resul1->fetch_array(MYSQLI_NUM);
         $cantex = (int) $row[0];
 
+
         //! Si la cantidad pedida es mayor que la cantidad de productos existentes
         if ($cantidad > $cantex) {
-            $cants = [$cantidad, $cantex];
-            return $cants;
-        }
-
-        //!Si la cantidad pedida del producto esta vacia
-        if (empty($cantidad)) {
-            return $cantidad;
+            $verss["cantidad"] = $cantidad;
+            $verss["cantex"] = $cantex;
+            return $verss;
         }
 
         //?Se obtienen los valores del precio total y fechas de obtencion
@@ -54,7 +63,8 @@ class Carrito
 
         //!Si falla el guardado de los productos en el carrito se manejara el error
         if (!$result) {
-            return $result;
+            $verss["ver2"] = false;
+            return $verss;
         }
 
         //*Se realiza una consulta para verificar la cantidad existentes de productos
@@ -63,8 +73,8 @@ class Carrito
 
         //!Si la consulta falla se manejara el error
         if (!$result4) {
-            $re4 = "";
-            return $re4;
+            $verss["ver3"] = false;
+            return $verss;
         }
 
         //?Se hacen los procesos de asignacion de valores
@@ -78,7 +88,8 @@ class Carrito
         $query1 = " UPDATE productos SET cantidad_existente = $CantNueva WHERE ID_PRO = $ID ";
         $result1 = mysqli_query($this->conn, $query1);
 
-        return $result1;
+        $verss["ver4"] = true;
+        return $verss;
 
     }
 
