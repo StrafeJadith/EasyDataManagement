@@ -37,7 +37,7 @@ if (isset($_SESSION["msg"])) {
     </style>
 </head>
 
-<body>
+<body class="gridContainer">
     <header id="headerCreditos">
         <div id="barranav">
 
@@ -103,53 +103,40 @@ if (isset($_SESSION["msg"])) {
 
         </div>
     </header>
-    <br>
-    <div style="padding-left: 50px;">
-        <table width="100%" style="padding-left: 100px;">
-            <tr align="left">
-                <th>
-                    <div class="sepa">
-                        <h1>Tienda la <br> Mano de Dios
-                        </h1>
-                        <p class="fs-4" style="color: #77583e;">Nosotros queremos brindarles el mejor servicio y
-                            <br> adaptarnos a sus necesidades para ser una
-                            <br> microempresa conocida y poder mejorar nuestros
-                            <br> servicios a ustedes.
-                        </p>
-                    </div>
-                    <br>
-                    <?php
+    <div  class="containerInicio">
+        
+          
+        <div class="parrafoInicio">
+            <h1>Tienda la <br> Mano de Dios</h1>
 
-                    if (empty($_SESSION['correo'])) { ?>
-                        <a href="inicio/inicio.php"><button type="button" class="btn " style="width: 200px;"> Descubrelo</button></a>
-                    <?php } ?>
+                <p class="fs-4" style="color: #77583e;">Nosotros queremos brindarles el mejor servicio y
+                <br> adaptarnos a sus necesidades para ser una
+                <br> microempresa conocida y poder mejorar nuestros
+                <br> servicios a ustedes.
+                </p>
 
-                </th>
-                <th align="center">
+            <?php
 
-                </th>
-                <th>
+                if (empty($_SESSION['correo'])) { ?>
+                    <a href="inicio/inicio.php"><button type="button" class="btn " style="width: 200px;"> Descubrelo</button></a>
 
-                </th>
-                <th align="right" style="padding-left: 250px;">
-                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="../../public/img/tienda.jpg" alt="..." style="width: 750PX; height: 400px ">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="../../public/img/tienbarri.jpg" alt="..." style="width: 670PX; height: 400px">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="../../public/img/tienbarri2.jpg" alt="..." style="width:700PX; height: 400px">
-                            </div>
-                        </div>
-                    </div>
-                </th>
-            </tr>
+            <?php } ?>
 
-            </tr>
-        </table>
+        </div>
+                
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" id="divCarousel">
+                    <img src="../../public/img/tienda.jpg" alt="..." >
+                </div>
+                <div class="carousel-item" id="divCarousel">
+                    <img src="../../public/img/tienbarri.jpg" alt="..." >
+                </div>
+                <div class="carousel-item" id="divCarousel">
+                    <img src="../../public/img/tienbarri2.jpg" alt="..." >
+                </div>
+            </div>
+        </div> 
     </div>
     <footer class="footerContainer">
         <div class="contactos">
