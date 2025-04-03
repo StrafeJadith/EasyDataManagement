@@ -131,12 +131,45 @@ a {
     text-decoration: none;
 }
 
+.containerInicio{
+
+    display: flex;
+    width: 100%;
+    height: 509px;
+}
+
+.containerInicio .parrafoInicio{
+
+    position: relative;
+    left: 50px;
+    top: 30px;
+    height: 450px;
+}
+
+#carouselExampleSlidesOnly{
+
+    position: relative;
+    left: 500px;
+    width: 800px;
+    height: 507px;
+
+}
+
+#divCarousel img{
+
+    width: 700px;
+    height: 400px;
+    position: relative;
+    top: 50px;
+    left: 20px;
+
+
+}
 
 footer{
 
 background-color: #d3b386;
-height: 200px;   
-
+height: 200px;
 }
 
 .contactos h1{
