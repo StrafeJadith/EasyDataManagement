@@ -18,7 +18,7 @@
 
             if(empty($CONTRASEÑA_US)){
 
-                echo "<script> alert('Debe ingresar una contraseña,si no desea cambiar la contraseña actual, puede ingresar la misma.'); </script>";
+                $_SESSION["msg"] = "error('Error','Debe ingresar una contraseña. Si no desea cambiar la contraseña actual, puede ingresar la misma.')";
             }
 
             else{
@@ -33,17 +33,17 @@
                 $resultActualizar = mysqli_query($conn,$Actualizar);
 
                 if($resultActualizar){
-                    echo "<script> alert('Datos actualizados correctamente'); </script>";
+                    $_SESSION['correo'] = $CORREO_US;
+                    $_SESSION['msg'] = "success('¡Datos actualizados correctamente!')";
                 }
                 else{
-                    echo "<script> alert('Hubo un error al actualizar los datos'); </script>";
+                    $_SESSION['msg'] = "error('Hubo un error al actualizar los datos.')";
                 }
             }
         }
 
         else{
-
-            echo "<script> alert('Por favor llene los campos requeridos'); </script>";
+            $_SESSION["msg"] = "error('Error','Por favor llene los campos requeridos.')";
         }
 
     }
