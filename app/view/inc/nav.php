@@ -16,7 +16,7 @@
                     <div id="NavList">
 
                         <ul id="Listas">
-                            <a href="../Usuario/inicio_index.php">
+                            <a href="../inicio_index.php">
                                 <li><strong> Inicio </strong></li>
                             </a>
                             <a href="../productos.php">
@@ -28,7 +28,7 @@
                             <a href="../historia.php">
                                 <li><strong> Sobre Nosotros </strong></li>
                             </a>
-                            <a href="../controlador/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
+                            <a href="../inicio/inicio.php"><button type="button" class="btn">Cerrar Sesión</button></a>
                             <li><img src="../../../public/img/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
                             </li>
 
