@@ -62,8 +62,6 @@ class Administrador{
             $_SESSION['ID5'] = $row5['ID_US'];
 
             return null;
-
-                   
             }
 
         public function deleteUser($ID_US){
@@ -108,7 +106,7 @@ class Administrador{
             $queryDel = "DELETE FROM usuarios WHERE ID_US = $ID_US";
             return mysqli_query($this->conn, $queryDel);
 
-           
+        
         }
 
         //                                                          CATEGORIAS
@@ -222,7 +220,7 @@ class Administrador{
             $query = "SELECT c.ID_CR, u.ID_US, c.Nombre_CR, c.Apellido_CR, c.Telefono_CR, c.Direccion_CR, c.Estado_CR, c.Fecha_CR,
             c.Valor_CR FROM credito c, usuarios u WHERE c.ID_US = u.ID_US";
 
-           return mysqli_query($this -> conn, $query);
+        return mysqli_query($this -> conn, $query);
         }
          // EDITAR CREDITOS
         public function editarCredito($ID){
