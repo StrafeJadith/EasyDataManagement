@@ -92,6 +92,38 @@ class Carrito
         return $verss;
 
     }
+//funcion cancelar producto
+    public function cancelarProducto($ID){
+        for ($i = 0; $i <= 0; $i++) {
+            $mostrar["mos$i"] = true;
+        }
+        $sql = "SELECT Nombre_VENT, Cantidad_VENT FROM ventas WHERE ID_VENT = $ID";
+        $result1 = mysqli_query($this->conn, $sql);
+
+        while ($row = mysqli_fetch_array($result1)) {
+
+            $nombre = $row['Nombre_VENT'];
+            $cantidad = (int) $row['Cantidad_VENT'];
+        }
+        $query = "DELETE FROM ventas WHERE ID_VENT = $ID";
+        $result = mysqli_query($this->conn, $query);
+
+        if ($result) {
+            $sql1 = "SELECT Cantidad_Existente FROM productos Where Nombre_PRO = '$nombre'";
+            $result2 = mysqli_query($this-> conn, $sql1);
+            $row1 = mysqli_fetch_array($result2);
+            $cantex = (int) $row1['Cantidad_Existente'];
+
+            $sql2 = "UPDATE productos set Cantidad_Existente = ($cantidad + $cantex) Where Nombre_PRO = '$nombre'";
+            $result3 = mysqli_query($this->conn, $sql2);
+            $mostrar["mos0"] = false;
+            return $mostrar;
+         
+
+        }
+        return null;
+
+    }
 
 }
 
