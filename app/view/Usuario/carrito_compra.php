@@ -19,21 +19,7 @@
     $conexion = new conexion();
     $conn = $conexion->getConexion();
 
-    if (isset($_GET['ID'])) {
-        $ID = $_GET['ID'];
-
-        $query = "DELETE FROM ventas WHERE ID_VENT = $ID";
-        $result = mysqli_query($conn, $query);
-
-
-        if ($result) {
-            echo ("success('¡Pago exitoso!','Producto cancelado correctamente')");
-        } else {
-            echo ("error('¡Error!','Pago  fallido')");
-        }
-
-        header("location: ./carrito_compra.php");
-    }
+    
     ?>
 
 
@@ -152,7 +138,7 @@
                                 <td><?php echo $row['Valor_total'] ?></td>
                                 <td>
 
-                                    <a href="./carrito_compra.php?ID=<?php echo $row['ID_VENT'] ?>">
+                                    <a href="../../controller/controllerCarrito.php?IDCancelar=<?php echo $row['ID_VENT'] ?>">
                                         <button type="submit" class="editarProd" name="Cancelar"><img
                                                 src="../Administrador/Imagenes/Eliminar.png" alt="Eliminar"
                                                 class="img"></button></a>
@@ -175,8 +161,8 @@
 
 
 
-                <div data-bs-toggle="modal" data-bs-target="#metodo_pago" style="width: 70px" ;> <button type="submit"
-                        class="editarProd" name="Comprar"><img src="../Administrador/Imagenes/AceptarCreditos.png"
+                <div data-bs-toggle="modal" data-bs-target="#metodo_pago" style="width: 70px" > <button type="submit"
+                        class="editarProd" name="Comprar"><img src="../../../public/img/Usuario/confirmacion_logo-removebg-preview.png"
                             alt="" class="btnedit" style="width: 70px"></button></div>
             </div>
 

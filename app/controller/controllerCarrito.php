@@ -6,7 +6,7 @@ $conexion = new conexion();
 $carritoConn = new Carrito($conexion->getConexion());
 $conn = $conexion->getConexion();
 
-//! Guardar productos en el carrito
+// Guardar productos en el carrito
 if (isset($_POST["Guardar"])) {
     $correo = $_SESSION["correo"];
     $ID = intval($_POST['ID_PRO']);
@@ -57,4 +57,22 @@ if (isset($_POST["Guardar"])) {
     return;
 }
 
+//Cancelar Productos
+if (isset($_GET['IDCancelar'])) {
+    $ID = $_GET['IDCancelar'];
+
+    $carritoUs = $carritoConn->cancelarProducto($ID);
+
+    if ($carritoUs['mos0'] === false) {
+
+        $_SESSION["msg"] = "success('¡Producto cancelado exitosamente!','El producto $nombre cancelado del carrito de compra')";
+        header("location: ../view/Usuario/carrito_compra.php");
+
+    } else {
+        echo (" <script>alert('error')</script>");
+    }
+
+    header("location: ../view/Usuario/carrito_compra.php");
+
+}
 ?>
