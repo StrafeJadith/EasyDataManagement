@@ -2,7 +2,6 @@
 
 require_once("../model/Conexion.php");
 require_once("../model/modeloInicio.php");
-require_once '../../public/js/alerts.js';
 
 
 
@@ -31,7 +30,7 @@ if (isset($_POST['registrate'])) {
             $_SESSION['msg'] = "error('¡Cedula Existente!','Esta cedula ya esta registrada.')";
         }
     } else {
-        $_SESSION["msg"] = "error('Error','Por favor llene todos los campos.');";  
+        $_SESSION["msg"] = "error('Error','Por favor llene todos los campos.');";
     }
 
     header("location: ../view/inicio/Registro.php");
@@ -62,16 +61,14 @@ if (isset($_REQUEST['iniciar'])) {
                 header("location: ../view/Usuario/index_.php");
                 break;
             default:
-            $_SESSION["msg"] = "error('Usuario o contraseña incorrecta','Ingrese un usuario o contraseña valido');";
-            header("location: ../view/inicio/inicio.php"); 
+                $_SESSION["msg"] = "error('Usuario o contraseña incorrecta','Ingrese un usuario o contraseña valido');";
+                header("location: ../view/inicio/inicio.php");
         }
     } else {
 
-        $_SESSION["msg"] = "error('Error','Por favor llene todos los campos.');";  
+        $_SESSION["msg"] = "error('Error','Por favor llene todos los campos.');";
         header("location: ../view/inicio/inicio.php");
     }
-
-    
 }
 
 //Solicitud credito
@@ -82,10 +79,11 @@ if (isset($_REQUEST['solicitarCredito'])) {
     $estado = ("En espera");
     // Obtener la fecha y hora actual en formato MySQL
     $fecha_credito = date("Y-m-d H:i:s");
+    $N°DeCredito = 1;
 
     if (!empty($monto)) {
 
-        $credito = $personamodel->SolicitudCredito($estado, $fecha_credito, $monto);
+        $credito = $personamodel->SolicitudCredito($estado, $fecha_credito, $monto, $N°DeCredito);
 
         if ($credito) {
             $_SESSION['msg'] = "success('¡Solicitud Exitosa!','Ha solicitado un credito satisfactoriamente.')";
@@ -120,4 +118,29 @@ if (isset($_REQUEST['recuperar'])) {
     }
 
     header("location: ../view/inicio/olvido_contraseña.php");
+}
+
+//Solicitud de un credito nuevo
+
+if (isset($_REQUEST['SolicitarNC'])) {
+
+    $estado = ("En espera");
+    $montoNC = $_REQUEST['monto2'];
+    var_dump($montoNC);
+    $fechaNC = date("Y-m-d H:i:s");
+
+    if (!empty($monto)) {
+
+        $NuevoCredito = $personamodel->SolicitudNuevaCredito($montoNC, $fechaNC, $estado);
+
+        if ($NuevoCredito) {
+            $_SESSION['msg'] = "success('¡Solicitud Exitosa!','Ha solicitado un nuevo credito satisfactoriamente.')";
+        } else {
+            $_SESSION['msg'] = "error('¡Ocurrio un error !','Error al momento de solicitar un nuevo credito')";
+        }
+    } else {
+        $_SESSION["msg"] = "error('Error','Por favor llene todos los campos.')";
+    }
+
+    header("location: ../view/Usuario/nuevoCredito.php");
 }

@@ -2,11 +2,12 @@
 
 include("../../model/Conexion.php");
 session_start();
+
 $conexion = new conexion();
 $conn = $conexion->getConexion();
 
 if (empty($_SESSION['correo'])) {
-    header("location: ./inicio.php");
+    header("location: ../inicio/inicio.php");
     session_destroy();
     die();
 }
@@ -26,6 +27,7 @@ if (empty($_SESSION['correo'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="../../../public/js/alerts.js"></script>
 </head>
 
 <body>
@@ -167,75 +169,40 @@ if (empty($_SESSION['correo'])) {
             </ul>
         </nav>
         <div class="padre">
-            <table>
-                <thead>
-                    <?php
-                    $correo = $_SESSION['correo'];
-                    $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-                    $resultConCr = mysqli_query($conn, $ConsultaCr);
-                    $rowCr = mysqli_fetch_array($resultConCr, MYSQLI_ASSOC);
-                    $creditoTotal = 0;
-                    $fechasCr = "Sin credito realizado";
-
-                    if (!empty($rowCr["Valor_Total"])) {
-                        $creditoTotal = $rowCr['Valor_Total'];
-                        $fechasCr = $rowCr['Fecha_CR'];
-                        //CONSULTAR ID DEL USUARIO
-                        $consultarIdAbono = "SELECT ID_US FROM usuarios WHERE Correo_US = '$correo'";
-                        $resultIdAbono = mysqli_query($conn, $consultarIdAbono);
-                        $rowAb = mysqli_fetch_array($resultIdAbono, MYSQLI_ASSOC);
-                        $IdeUs = $rowAb['ID_US'];
-
-                        //TRAER LOS GASTOS DEL USUARIO
-                        $ConsultaCr = "SELECT * FROM gasto_credito WHERE ID_US = $IdeUs";
-                        $resultConCr = mysqli_query($conn, $ConsultaCr);
-                    }
-
-
-                    ?>
-                    <tr>
-                        <td><strong>Credito Total</strong></td>
-                        <td><strong>$<?= $creditoTotal ?></strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gastos</strong></td>
-                        <td><strong>Fechas</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Estado Credito</strong></td>
-                        <td><strong><?= $rowCr['Estado_CR'] ?></strong></td>
-                    </tr>
-
-
-                </thead>
-            </table>
-            <br><br><br>
-            <tr>
-                <?php
-                /* consulta para que aparezca el boton*/
-                $sqlCredito = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-                $consulta = mysqli_query($conn, $sqlCredito);
-                while ($row = mysqli_fetch_array($consulta)) {
-                    $CreditoSolicitud = $row['Estado_ACT'];
-                    $estadoCredito = $row['Estado_CR'];
-                }
-                /* solicitud nuevo credito  */
-                if ($CreditoSolicitud == 0 && $estadoCredito == "Aceptado") { ?>
-                    <a href="nuevoCredito.php"><button type="button" class="btn">Solicitar un nuevo credito</button></a>
-                <?php } ?>
-            </tr>
+            <form action="../../controller/controllerInicio.php" method="post">
+                <div>
+                    <label for="">Solicitud nueva de credito</label>
+                    <br><br>
+                    <input type="number" name="monto2" placeholder="Digite un monto">
+                    <br><br>
+                    <input type="submit" name="SolicitarNC" value="Solicitar un nuevo credito">
+            </form>
         </div>
     </div>
-    <footer class="footerContainer ">
-        <div class="contactos ">
+    </div>
+    <?php
+
+    if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+
+        if ($msg) {
+            echo ("<script> $msg </script>");
+
+            unset($_SESSION["msg"]);
+        }
+    }
+
+
+    ?>
+    <footer class=" footerContainer ">
+        <div class=" contactos ">
             <h1>Contactanos</h1>
         </div>
-        <div class="socialIcons ">
-            <a href><i class="fa-brands fa-facebook "></i></a>
-            <a href><i class="fa-brands fa-whatsapp "></i></a>
-            <a href><i class="fa-brands fa-twitter "></i></a>
-            <a href><i class="fa-brands fa-google "></i></a>
+        <div class=" socialIcons ">
+            <a href><i class=" fa-brands fa-facebook "></i></a>
+            <a href><i class=" fa-brands fa-whatsapp "></i></a>
+            <a href><i class=" fa-brands fa-twitter "></i></a>
+            <a href><i class=" fa-brands fa-google "></i></a>
         </div>
     </footer>
-    <script src="../../../public/js/pagos.js"></script>
 </body>

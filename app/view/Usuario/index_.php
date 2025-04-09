@@ -2,8 +2,10 @@
 
 include("../../model/Conexion.php");
 session_start();
+
 $conexion = new conexion();
 $conn = $conexion->getConexion();
+
 if (empty($_SESSION['correo'])) {
     header("location: ./inicio.php");
     session_destroy();
@@ -58,12 +60,13 @@ if (empty($_SESSION['correo'])) {
                             <?php
 
                             if (empty($_SESSION['correo'])) { ?>
-                                <a href="./inicio.php"><button type="button" class="btn">Iniciar
+                                <a href="../inicio/inicio.php"><button type="button" class="btn">Iniciar
                                         Sesion</button></a>
 
                             <?php } else { ?>
-                                <a href="../../controller/controladorcerrarsesion.php"><button type="button"
-                                        class="btn">Cerrar
+
+                                <a href="../../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar
+
                                         Sesión</button></a>
 
                                 <a href="./carrito_compra.php">

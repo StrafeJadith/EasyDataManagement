@@ -18,7 +18,7 @@ class Registro
     public function guardarPersona($usuario, $correo, $telefono, $direccion, $cedula, $contraseña)
     {
 
-        $sql = "SELECT 1 FROM usuarios WHERE ID_US = $cedula";
+        $sql = "SELECT * FROM usuarios WHERE ID_US = $cedula";
         $result = mysqli_query($this->conn, $sql);
 
         if (mysqli_num_rows($result) > 0) {
@@ -58,7 +58,7 @@ class Registro
         }
     }
 
-    public function SolicitudCredito($estado, $fecha_credito, $monto)
+    public function SolicitudCredito($estado, $fecha_credito, $monto, $N°DeCredito)
     {
 
         // esta consulta es para traerme los datos de la base de datos y solo pedirle al usuario el monto del credito
@@ -84,7 +84,7 @@ class Registro
             return false;
         } else {
             // Si no existe,se procede a hacer la consulta
-            $guardar = "INSERT INTO credito (Nombre_CR,Correo_CR, Telefono_CR, Direccion_CR, Estado_CR, Fecha_CR, Valor_CR, ID_US) VALUE ('$nombre_us','$correo_us', $telefono_us,'$direccion_us', '$estado', '$fecha_credito', $monto, $cedula_us) ";
+            $guardar = "INSERT INTO credito (Nombre_CR,Correo_CR, Telefono_CR, Direccion_CR, Estado_CR, Fecha_CR, Valor_CR, ID_US, NDeCreditos_ACT) VALUE ('$nombre_us','$correo_us', $telefono_us,'$direccion_us', '$estado', '$fecha_credito', $monto, $cedula_us, $N°DeCredito) ";
 
             // se ejecuta la consulta dentro de una condicion y se muestra sus posibles condiciones
             if (mysqli_query($this->conn, $guardar)) {
@@ -116,5 +116,24 @@ class Registro
         } else {
             return false;
         }
+    }
+
+    public function SolicitudNuevaCredito($montoNC, $fechaNC, $estado)
+    {
+        $correo = $_SESSION['correo'];
+        $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
+        $resultado = mysqli_query($this->conn, $sql);
+        while ($result = mysqli_fetch_array($resultado)) {
+            // $cedula_us = $result['ID_US'];
+            $NCreditos = $result['NDeCreditos_ACT'];
+        }
+
+        // var_dump($NCreditos);
+
+        //La suma de los creditos adquiridos
+        $N = $NCreditos + 1;
+
+        $sql_2 = "UPDATE credito SET Estado_CR = '$estado', Fecha_CR = '$fechaNC', Valor_CR = '$montoNC', Valor_Total = '$montoNC', NDeCreditos_ACT = '$N' WHERE Correo_CR = '$correo'";
+        return mysqli_query($this->conn, $sql_2);
     }
 }
