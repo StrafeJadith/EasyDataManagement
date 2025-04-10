@@ -170,13 +170,24 @@ if (empty($_SESSION['correo'])) {
                     $rowAb = mysqli_fetch_assoc($resultIdAbono);
                     $IdeUs = $rowAb['ID_US'];
 
-                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs AND ";
+                    $congastoAbono2 = "SELECT ID_AC FROM abono_credito WHERE ID_US = $IdeUs";
+                    $resultAbono2 = mysqli_query($conn, $congastoAbono2);
+                    $rowConGast = mysqli_fetch_assoc($resultAbono2);
+                    if (!empty($rowConGast)) {
+                        $IdAc = $rowConGast["ID_AC"];
+                    }
+                    $IdAc = 0;
+
+
+
+                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs";
                     $resultAbono = mysqli_query($conn, $conGastoAbono);
                     $rowAbono = mysqli_fetch_assoc($resultAbono);
                     $AbonoMonto = $rowAbono['MontoSuma'];
 
                     $CreditoRestante = $creditoTotal - $AbonoMonto;
                     $_SESSION["credRest"] = $CreditoRestante;
+
 
                 }
 
