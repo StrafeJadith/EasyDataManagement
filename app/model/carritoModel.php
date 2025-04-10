@@ -2,6 +2,10 @@
 
 session_start();
 require_once 'Conexion.php';
+require("../../vendor/autoload.php");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Carrito
 {
@@ -207,6 +211,180 @@ class Carrito
         }
 
     }
+
+
+//pagar Efectivo
+ public function compraEfectivo($correo, $pago){
+        for ($i = 0; $i <= 0; $i++) {
+            $mostrar["mos$i"] = true;
+        }
+
+        $queryid = "SELECT ID_US FROM usuarios Where Correo_US = '$correo' ";
+        $resulid = mysqli_query($this->conn, $queryid);
+        $fila = mysqli_fetch_array($resulid);
+        $iduser = $fila['ID_US'];
+
+        $query = "SELECT * FROM ventas where ID_US = $iduser ";
+        $result = mysqli_query($this->conn, $query);
+
+        while ($row = mysqli_fetch_array($result)) {
+            $nombre = $row['Nombre_VENT'];
+            $cantidad = $row['Cantidad_VENT'];
+            $estado = $row['Estado_VENT'];
+
+        }
+        if ($estado == 'Proceso') {
+
+            $querysum1 = "SELECT sum(Valor_total) as total from ventas WHERE Estado_VENT = '$estado' AND ID_US = $iduser";
+            $resultsum1 = mysqli_query($this->conn, $querysum1);
+            if ($resultsum1) {
+                $rowsum = $resultsum1->fetch_array(MYSQLI_NUM);
+                $totalsum = $rowsum[0];
+
+            }
+
+            $query2 = "SELECT ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
+            $result2 = mysqli_query($this->conn, $query2);
+            if ($result2) {
+                $row = $result2->fetch_array(MYSQLI_NUM);
+                $ID_PRO = $row[0];
+
+            }
+
+
+            $sql = "SELECT Nombre_US, ID_US FROM usuarios WHERE Correo_us = '$correo'";
+            $resultado = mysqli_query($this->conn, $sql);
+            while ($row = mysqli_fetch_array($resultado)) {
+                $nombre = $row['Nombre_US'];
+                $ID_CL = $row['ID_US'];
+            }
+
+
+            $ID_PRO = (int) $ID_PRO;
+            $cantidad = (int) $cantidad;
+            $fechadv = date("Y-m-d");
+
+
+            $query3 = "INSERT INTO detalle_de_venta( FECHA_DV, TOTAL_DV, ID_US, ID_MTP) VALUES ( '$fechadv', $totalsum, $ID_CL, $pago)";
+            $result3 = mysqli_query($this->conn, $query3);
+
+
+            if (!$result3) {
+
+                $mostrar["mos0"] = false;
+                return $mostrar;
+
+            } else {
+                $mostrar["mos0"] = true;
+               
+
+                $sql = "SELECT Nombre_US FROM usuarios WHERE ID_US = $ID_CL";
+                $consulta = mysqli_query($this->conn, $sql);
+                while ($row = mysqli_fetch_array($consulta)) {
+                    $nombre = $row['Nombre_US'];
+                }
+
+                $sql2 = "SELECT Nombre_PRO FROM productos WHERE ID_PRO = $ID_PRO";
+                $consulta2 = mysqli_query($this->conn, $sql2);
+                while ($row = mysqli_fetch_array($consulta2)) {
+                    $nombre_producto = $row['Nombre_PRO'];
+                }
+
+                $sql3 = "SELECT Tipo_Pago_MTP FROM metodo_pago where ID_MTP = $pago";
+                $consulta3 = mysqli_query($this->conn, $sql3);
+                while ($row = mysqli_fetch_array($consulta3)) {
+                    $nombre_pago = $row['Tipo_Pago_MTP'];
+                }
+
+
+
+                $mail1 = new PHPMailer(true);
+
+                try {
+                    $mail1->isSMTP();
+                    $mail1->Host = 'smtp.gmail.com';
+                    $mail1->SMTPAuth = true;
+                    $mail1->Username = 'tiendalamanodedios08@gmail.com';
+                    $mail1->Password = 'cikmzzyygmgprsbn';
+                    $mail1->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail1->Port = 587;
+
+                    $mail1->setFrom('tiendalamanodedios08@gmail.com', 'EDM');
+                    $mail1->addAddress($correo);
+
+                    $mail1->isHTML(true);
+                    $mail1->Subject = 'Compra realizada';
+                    $mail1->Body = 'Hola, ' . $nombre . '<br> Gracias por tu compra en la tienda, aqui tienes un detalle de tu compra:  <br> Fecha compra: ' . $fechadv . '<br> Nombre del producto: ' . $nombre_producto . '<br> Cantidad comprada: ' . $cantidad . '<br> Metodo de pago: ' . $nombre_pago . '<br> Total Compra: ' . $totalsum;
+
+                    $mail1->send();
+                } catch (Exception $e) {
+                    echo "Error al enviar el correo: {$mail->ErrorInfo}";
+                }
+
+                $query1 = " UPDATE ventas set Estado_VENT = 'Confirmado' where ID_US = $ID_CL";
+                $result1 = mysqli_query($this->conn, $query1);
+
+
+                //CORREO VENDEDORES
+
+                if ($result3) {
+
+
+                    $sql = "SELECT * FROM usuarios where ID_TU = '2'";
+                    $consulta = mysqli_query($this->conn, $sql);
+                    while ($row = mysqli_fetch_array($consulta)) {
+                        $correovendedor = $row['Correo_US'];
+                    }
+
+                    $sql1 = "SELECT Correo_US from usuarios where ID_US = $ID_CL";
+                    $consulta1 = mysqli_query($this->conn, $sql1);
+                    while ($row = mysqli_fetch_array($consulta1)) {
+                        $CORREO_US = $row['Correo_US'];
+                    }
+
+                    $sql2 = "SELECT Nombre_PRO FROM productos WHERE ID_PRO = $ID_PRO";
+                    $consulta2 = mysqli_query($this->conn, $sql2);
+                    while ($row = mysqli_fetch_array($consulta2)) {
+                        $NOMBREPRO = $row['Nombre_PRO'];
+                    }
+
+                    $sql3 = "SELECT Tipo_Pago_MTP FROM metodo_pago where ID_MTP = $pago";
+                    $consulta3 = mysqli_query($this->conn, $sql3);
+                    while ($row = mysqli_fetch_array($consulta3)) {
+                        $METODO = $row['Tipo_Pago_MTP'];
+                    }
+
+                    // $correovendedor = "adriianchoo12@gmail.com";
+
+                    $mail2 = new PHPMailer(true);
+
+                    try {
+                        $mail2->isSMTP();
+                        $mail2->Host = 'smtp.gmail.com';
+                        $mail2->SMTPAuth = true;
+                        $mail2->Username = 'tiendalamanodedios08@gmail.com';
+                        $mail2->Password = 'cikmzzyygmgprsbn';
+                        $mail2->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail2->Port = 587;
+
+                        $mail2->setFrom('tiendalamanodedios08@gmail.com', 'EDM');
+                        $mail2->addAddress($correovendedor);
+
+                        $mail2->isHTML(true);
+                        $mail2->Subject = 'Nueva venta realizada';
+                        $mail2->Body = 'Se ha realizado una nueva venta, <br> detalles de la venta: <br> Fecha compra: ' . $fechadv . '<br> Correo del comprador: ' . $CORREO_US . '<br> Nombre del producto: ' . $NOMBREPRO . '<br> Cantidad comprada: ' . $cantidad . '<br> Metodo de pago: ' . $METODO;
+
+                        $mail2->send();
+                        echo (" <script>alert('Correo enviado correctamente ')</script>");
+                    } catch (Exception $e) {
+                        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+                    }
+                }
+
+            }
+        }
+
+}
 
 }
 

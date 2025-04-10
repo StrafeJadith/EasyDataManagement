@@ -178,9 +178,6 @@ if (empty($_SESSION['correo'])) {
                     $CreditoRestante = $creditoTotal - $AbonoMonto;
                     $_SESSION["credRest"] = $CreditoRestante;
 
-                    if($AbonoMonto == $rowCr["Valor_Cr"]){
-                        $creditoRestaurar = 
-                    }
                 }
 
                 ?>

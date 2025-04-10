@@ -7,7 +7,7 @@
                 <button type="button" class=" x btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class=" body modal-body">
-                <form action="../Phpjadith/Cruds/comprar_producto.php" method="POST">
+                <form action="../../controller/controllerCarrito.php" method="POST">
 
                     <h3>Escoja el metodo de pago por el cual quiera realizar la compra</h3>
                     <br><br>
