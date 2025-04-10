@@ -20,13 +20,16 @@ if (isset($_POST["Guardar"])) {
         return;
 
     }
-    $carritoUs = $carritoConn->guardarProducto($correo, $ID, $nombre, $precio, $cantidad);
 
-    if ($carritoUs["ver0"] === false) {
+    if (empty($cantidad)) {
         $_SESSION["msg"] = "error('Campo vacio','Por favor llene el campo cantidad con la cantidad de producto que quiera comprar del producto')";
         header("location: ../view/productos.php");
         return;
     }
+
+    $carritoUs = $carritoConn->guardarProducto($correo, $ID, $nombre, $precio, $cantidad);
+
+
     if ($carritoUs["ver1"] === false) {
         $_SESSION["msg"] = "error('Error en la consulta','Test')";
         header("location: ../view/productos.php");
@@ -46,18 +49,15 @@ if (isset($_POST["Guardar"])) {
         return;
     }
 
-    if ($carritoUs["ver3"] === false) {
-        $_SESSION["msg"] = "error('Error','Error en buscar cantidad')";
-        header("location: ../view/productos.php");
-        return;
-    }
-
     $_SESSION["msg"] = "success('¡Producto agregado exitosamente!','El producto $nombre fue agregado al carrito, dirijase a el para aceptar la compra')";
     header("location: ../view/productos.php");
     return;
 }
 
-//Cancelar Productos
+
+
+
+//*Cancelar Productos
 if (isset($_GET['IDCancelar'])) {
     $ID = $_GET['IDCancelar'];
 
@@ -75,4 +75,47 @@ if (isset($_GET['IDCancelar'])) {
     header("location: ../view/Usuario/carrito_compra.php");
 
 }
+
+
+
+//*Pagar producto con credito
+if (isset($_POST['mcredito'])) {
+    $correo = $_SESSION["correo"];
+    $pago = 002;
+
+    $carritoUs = $carritoConn->compraCredito($correo, $pago);
+
+    if ($verss["ver0"] === false) {
+        $_SESSION["msg"] = "error('Credito inactivo','No puede pagar con creditos porque no tiene uno activo en la tienda.')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+    if ($verss["ver1"] === false) {
+        $_SESSION["msg"] = "error('Credito inactivo','No puede pagar con creditos porque no tiene uno activo en la tienda.')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+    if ($verss["ver2"] === false) {
+        $_SESSION["msg"] = "error('Error','No tienes suficiente credito para realizar esta compra')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+    if ($verss["ver3"] === false) {
+        $_SESSION["msg"] = "error('Error','Error al guardar gasto de credito')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+
+    if ($verss["ver4"] === false) {
+        $_SESSION["msg"] = "error('Error','No se encontraron datos')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+    if ($verss["ver3"] === true) {
+        $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
+}
+
 ?>

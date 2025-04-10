@@ -157,26 +157,30 @@ if (empty($_SESSION['correo'])) {
                 $correo = $_SESSION['correo'];
                 $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo' AND Estado_ACT = 1";
                 $resultConCr = mysqli_query($conn, $ConsultaCr);
-                $rowCr = mysqli_fetch_array($resultConCr, MYSQLI_ASSOC);
+                $rowCr = mysqli_fetch_assoc($resultConCr);
                 $creditoTotal = 0;
                 $fechasCr = "Sin credito realizado";
                 $AbonoMonto = 0;
                 $CreditoRestante = 0;
-                if (!empty($rowCr["Valor_Total"])) {
+                if (!empty($rowCr["Valor_CR"])) {
                     $creditoTotal = $rowCr['Valor_Total'];
                     $fechasCr = $rowCr['Fecha_CR'];
                     $consultarIdAbono = "SELECT ID_US FROM usuarios WHERE Correo_US = '$correo'";
                     $resultIdAbono = mysqli_query($conn, $consultarIdAbono);
-                    $rowAb = mysqli_fetch_array($resultIdAbono, MYSQLI_ASSOC);
+                    $rowAb = mysqli_fetch_assoc($resultIdAbono);
                     $IdeUs = $rowAb['ID_US'];
 
-                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs";
+                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs AND ";
                     $resultAbono = mysqli_query($conn, $conGastoAbono);
-                    $rowAbono = mysqli_fetch_array($resultAbono, MYSQLI_ASSOC);
+                    $rowAbono = mysqli_fetch_assoc($resultAbono);
                     $AbonoMonto = $rowAbono['MontoSuma'];
 
                     $CreditoRestante = $creditoTotal - $AbonoMonto;
                     $_SESSION["credRest"] = $CreditoRestante;
+
+                    if($AbonoMonto == $rowCr["Valor_Cr"]){
+                        $creditoRestaurar = 
+                    }
                 }
 
                 ?>
