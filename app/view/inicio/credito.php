@@ -121,7 +121,7 @@ if (empty($_SESSION['correo'])) {
                             <?php } else { ?>
                                 <a href="../../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
 
-                                <a href="../productos/carrito_compra.php">
+                                <a href="../Usuario/carrito_compra.php">
                                     <li><img src="../../../public/img/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
                                     </li>
                                 </a>
