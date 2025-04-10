@@ -180,7 +180,7 @@ if (empty($_SESSION['correo'])) {
 
 
 
-                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs AND ID_AC = $IdAc";
+                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs";
                     $resultAbono = mysqli_query($conn, $conGastoAbono);
                     $rowAbono = mysqli_fetch_assoc($resultAbono);
                     $AbonoMonto = $rowAbono['MontoSuma'];
