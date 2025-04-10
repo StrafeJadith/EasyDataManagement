@@ -51,7 +51,8 @@ $conn = $conexion->getConexion();
                             <?php
                             session_start();
                             if (empty($_SESSION['correo'])) { ?>
-                                <a href="./Usuario/inicio_credito.php">
+                                    <a href="./CreditosInicio.php">
+
                                     <li><strong> Creditos </strong></li>
                                 </a>
                                 <a href="./historia.php">
