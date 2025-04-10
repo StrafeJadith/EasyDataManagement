@@ -69,6 +69,7 @@ if (isset($_SESSION["msg"])) {
                             if (empty($_SESSION['correo'])) { ?>
 
                                 <a href="CreditosInicio.php">
+
                                     <li><strong> Creditos </strong></li>
                                 </a>
                                 <a href="historia.php">

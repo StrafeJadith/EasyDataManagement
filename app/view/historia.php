@@ -44,6 +44,7 @@ $conn = $conexion->getConexion();
                             </a>
 
                             <?php
+
                             session_start();
                             if (empty($_SESSION['correo'])) { ?>
                                 <a href="CreditosInicio.php">
@@ -66,6 +67,7 @@ $conn = $conexion->getConexion();
                                     <li><img src="../../public/img/Carrito.png" width="40px" height="40px"
                                             style="margin-top: -18px;">
                                     </li>
+
                                 </a>
                                 <a href="usuario/index_.php">
                                     <li><img src="../../public/img/home.svg" width="40px" height="40px"

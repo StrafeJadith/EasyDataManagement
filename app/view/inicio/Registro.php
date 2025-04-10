@@ -98,7 +98,7 @@ $conn = $conexion->getConexion();
                             <a href="../productos.php">
                                 <li><strong> Productos </strong></li>
                             </a>
-                            <a href="../Usuario/inicio_credito.php">
+                            <a href="../inicio_index.php">
                                 <li><strong> Creditos </strong></li>
                             </a>
                             <a href="../historia.php">
