@@ -86,13 +86,13 @@
             <td><?php echo $rowusu['Telefono_US']; ?></td>
 
             <td>
-                <button class="editarProd" data-bs-toggle="modal" data-bs-target="#ModalEditUs<?php echo $rowusu['ID_US']; ?>">
+                <button id="editarUs" class="editarProd" data-bs-toggle="modal" data-bs-target="#ModalEditUs<?php echo $rowusu['ID_US']; ?>">
                     <img src="../../../public/img/Administrador/Editar.png" alt="Editar" id="editarImg">
                 </button>
             </td>
 
             <td>
-                <button data-bs-toggle="modal" data-bs-target="#ModalDeleteUs<?php echo $rowusu['ID_US']; ?>">
+                <button id="deleteUs" data-bs-toggle="modal" data-bs-target="#ModalDeleteUs<?php echo $rowusu['ID_US']; ?>">
                     <img src="../../../public/img/Administrador/Eliminar.png" alt="Eliminar" id="deleteImg">
                 </button>
             </td>
