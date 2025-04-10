@@ -191,7 +191,6 @@ if (empty($_SESSION['correo'])) {
                         $resultConCr = mysqli_query($conn, $ConsultaCr);
                     }
 
-
                     ?>
                     <tr>
                         <td><strong>Credito Total</strong></td>
@@ -201,10 +200,17 @@ if (empty($_SESSION['correo'])) {
                         <td><strong>Gastos</strong></td>
                         <td><strong>Fechas</strong></td>
                     </tr>
-                    <tr>
-                        <td><strong>Estado Credito</strong></td>
-                        <td><strong><?= $rowCr['Estado_CR'] ?></strong></td>
-                    </tr>
+                    <?php
+
+                    $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
+                    $resultado = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($resultado) > 0) { ?>
+                        <tr>
+                            <td><strong>Estado Credito</strong></td>
+                            <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+                        </tr>
+                    <?php }
+                    ?>
 
 
                 </thead>
@@ -213,6 +219,9 @@ if (empty($_SESSION['correo'])) {
             <tr>
                 <?php
                 /* consulta para que aparezca el boton*/
+                $CreditoSolicitud = 0;
+                $estadoCredito = 0;
+
                 $sqlCredito = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
                 $consulta = mysqli_query($conn, $sqlCredito);
                 while ($row = mysqli_fetch_array($consulta)) {

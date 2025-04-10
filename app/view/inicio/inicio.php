@@ -87,7 +87,7 @@ $conn = $conexion->getConexion();
 
                     <form class="form-inline">
                         <div class="form-group">
-                    
+
                         </div>
                     </form>
                 </div>
@@ -102,7 +102,7 @@ $conn = $conexion->getConexion();
                             <a href="../productos.php">
                                 <li><strong> Productos </strong></li>
                             </a>
-                            <a href="../Usuario/inicio_credito.php">
+                            <a href="../CreditosInicio.php">
                                 <li><strong> Creditos </strong></li>
                             </a>
                             <a href="../historia.php">

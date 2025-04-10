@@ -1,3 +1,12 @@
+<?php
+
+require_once("../model/Conexion.php");
+
+$conexion = new conexion();
+$conn = $conexion->getConexion();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +58,7 @@
                                 <a href="CreditosInicio.php">
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="./historia.php">
+                                <a href="historia.php">
                                     <li><strong> Sobre Nosotros </strong></li>
                                 </a>
                                 <a href="inicio/inicio.php"><button type="button" class="btn">Iniciar
@@ -59,14 +68,17 @@
                                 <a href="CreditosInicio.php">
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
+                                <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar
+                                        Sesión</button></a>
 
-                                <a href="./Usuario/carrito_compra.php">
-                                    <li><img src="../../public/img/Usuario/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
+                                <a href="Usuario/carrito_compra.php">
+                                    <li><img src="../../public/img/Carrito.png" width="40px" height="40px"
+                                            style="margin-top: -18px;">
                                     </li>
                                 </a>
-                                <a href="./Usuario/index_.php">
-                                    <li><img src="../../public/img/Usuario/home.svg" width="40px" height="40px" style="margin-top: -18px;">
+                                <a href="usuario/index_.php">
+                                    <li><img src="../../public/img/home.svg" width="40px" height="40px"
+                                            style="margin-top: -18px;">
                                     </li>
                                 </a>
                             <?php } ?>
@@ -95,11 +107,21 @@
         </p>
 
         <?php
-        if (empty($_SESSION['correo'])) { ?>
-            <a href="inicio/inicio.php"><button type="button" id="btn1">Solicitalo aqui</button></a>
-        <?php } else { ?>
+
+        if (!empty($_SESSION['correo'])) {
+            $correo = $_SESSION['correo'];
+            $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
+            $resultado = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($resultado) > 0) {
+                header("location: Usuario/gasto credito.php");
+            }
+        }
+
+        if (!empty($_SESSION['correo'])) { ?>
             <a href="inicio/credito.php"><button type="button" id="btn1">Solicitalo aqui</button></a>
-        <?php  } ?>
+        <?php } else { ?>
+            <a href="inicio/inicio.php"><button type="button" id="btn1">Solicitalo aqui</button></a>
+        <?php } ?>
 
 
     </div>
