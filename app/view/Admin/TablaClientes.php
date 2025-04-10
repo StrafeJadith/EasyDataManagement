@@ -1,18 +1,29 @@
 <?php
-    include("../../model/Conexion.php");
+   include("../../model/Conexion.php");
 
-    session_start();
+   session_start();
 
-    if (empty($_SESSION['correo'])) {
-        header("location: ../registro/inicio.php");
-        session_destroy();
-        die();
-    }
-    
-    $conexion = new Conexion();
-    $conn = $conexion->getConexion();
+   if (empty($_SESSION['correo'])) {
+       header("location: ../registro/inicio.php");
+       session_destroy();
+       die();
+   }
 
+   $conexion = new Conexion();
+   $conn = $conexion->getConexion();
+
+
+    $usuariosPorPagina = 5;
+    $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $offset = ($paginaActual - 1) * $usuariosPorPagina;
+
+    // Obtener total de usuarios para calcular total de páginas
+    $totalUsuariosQuery = "SELECT COUNT(*) as total FROM usuarios WHERE ID_TU = 3";
+    $totalResult = mysqli_query($conn, $totalUsuariosQuery);
+    $totalRow = mysqli_fetch_assoc($totalResult);
+    $totalPaginas = ceil($totalRow['total'] / $usuariosPorPagina);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,50 +73,74 @@
                         <tbody>
                             
                             
-                                <?php
+                        <?php 
+                         $query = "SELECT * FROM usuarios WHERE ID_TU = 3 LIMIT $usuariosPorPagina OFFSET $offset";
+                         $resultado = mysqli_query($conn,$query);
 
-                                
-                                    
-                                    $query = "SELECT * FROM usuarios WHERE ID_TU = 3";
-                                    $resultadousu = mysqli_query($conn,$query);
-                                    
-                                    while($rowusu = mysqli_fetch_array($resultadousu)){ ?>
-                                    <tr>
-                                            <td><?php echo $rowusu['ID_US'] ?></td>
-                                            <td><?php echo $rowusu['Nombre_US'] ?></td>
-                                            <td><?php echo $rowusu['Correo_US'] ?></td>
-                                            <td><?php echo $rowusu['Dirección_US'] ?></td>
-                                            <td><?php echo $rowusu['Telefono_US'] ?></td>
-                                        
-                                            
-                                            <td>
-                                                <button class="editarProd" id="editarUs" name="Editar" data-bs-toggle="modal" data-bs-target="#ModalEditUs<?php echo $rowusu['ID_US']; ?>"><img src="../../../public/img/Administrador/Editar.png" alt="Editar" id="editarImg"></button>
-                                            </td>
-                                            
-                                            <td>
-                                            <button id="deleteUs" data-bs-toggle="modal" data-bs-target="#ModalDeleteUs<?php echo $rowusu['ID_US']; ?>"><img src="../../../public/img/Administrador/Eliminar.png" alt="Eliminar" id="deleteImg"></button>
-                                            </td>
-                                            <?php include '../../model/Modals/ModalEliminarUs.php' ?>
-                                            <?php include '../../model/Modals/ModalEditarUs.php' ?>
-                                            
-                                    <?php } ?> 
-                                    <?php 
-                                        if(isset($_SESSION["msg"])){
-                                            $msg = $_SESSION["msg"];
-                                            if($msg){
-                                                echo("<script> $msg </script>");
-                                                unset($_SESSION["msg"]);
+                        while ($rowusu = mysqli_fetch_assoc($resultado)) { ?>
+        <tr>
+            <td><?php echo $rowusu['ID_US']; ?></td>
+            <td><?php echo $rowusu['Nombre_US']; ?></td>
+            <td><?php echo $rowusu['Correo_US']; ?></td>
+            <td><?php echo $rowusu['Dirección_US']; ?></td>
+            <td><?php echo $rowusu['Telefono_US']; ?></td>
 
-                                                }
-                                            }
-                                        ?>    
-                                    
-                            </tr>  
-                        </tbody>   
-                    </table>
-                </div> 
+            <td>
+                <button class="editarProd" data-bs-toggle="modal" data-bs-target="#ModalEditUs<?php echo $rowusu['ID_US']; ?>">
+                    <img src="../../../public/img/Administrador/Editar.png" alt="Editar" id="editarImg">
+                </button>
+            </td>
+
+            <td>
+                <button data-bs-toggle="modal" data-bs-target="#ModalDeleteUs<?php echo $rowusu['ID_US']; ?>">
+                    <img src="../../../public/img/Administrador/Eliminar.png" alt="Eliminar" id="deleteImg">
+                </button>
+            </td>
+
+            <?php include '../../model/Modals/ModalEliminarUs.php'; ?>
+            <?php include '../../model/Modals/ModalEditarUs.php'; ?>
+        </tr>
+    <?php } ?>
+</table>
+
+<!-- Flechas de paginación -->
+<div class="paginacion">
+    <!-- Flecha izquierda -->
+    <?php if ($paginaActual > 1): ?>
+        <a href="?pagina=<?php echo $paginaActual - 1; ?>">
+            <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior">
+        </a>
+    <?php else: ?>
+        <!-- Imagen deshabilitada -->
+        <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior" style="opacity: 0.5; cursor: default;">
+    <?php endif; ?>
+
+    <!-- Flecha derecha -->
+    <?php if ($paginaActual < $totalPaginas): ?>
+        <a href="?pagina=<?php echo $paginaActual + 1; ?>">
+            <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente">
+        </a>
+    <?php else: ?>
+        <!-- Imagen deshabilitada -->
+        <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente" style="opacity: 0.5; cursor: default;">
+    <?php endif; ?>
+</div>
+
+
+<?php 
+// Mostrar mensajes de sesión si existen
+if (isset($_SESSION["msg"])) {
+    $msg = $_SESSION["msg"];
+    if ($msg) {
+        echo "<script> $msg </script>";
+        unset($_SESSION["msg"]);
+    }
+}
+?>
+                
+            </div>    
+            </div>
             </div>  
-        </div>
     </section>
     
     <?php include '../../view/inc/footer.php' ?>
