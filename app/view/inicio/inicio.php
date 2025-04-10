@@ -87,7 +87,7 @@ $conn = $conexion->getConexion();
 
                     <form class="form-inline">
                         <div class="form-group">
-                    
+
                         </div>
                     </form>
                 </div>

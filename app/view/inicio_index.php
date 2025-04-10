@@ -67,10 +67,12 @@ if (isset($_SESSION["msg"])) {
                             <?php
 
                             if (empty($_SESSION['correo'])) { ?>
-                                <a href="./CreditosInicio.php">
+
+                                <a href="CreditosInicio.php">
+
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="./historia.php">
+                                <a href="historia.php">
                                     <li><strong> Sobre Nosotros </strong></li>
                                 </a>
                                 <a href="inicio/inicio.php"><button type="button" class="btn">Iniciar
@@ -82,16 +84,15 @@ if (isset($_SESSION["msg"])) {
                                 </a>
                                 <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
 
-                                <a href="./Usuario/carrito_compra.php">
+                                <a href="Usuario/carrito_compra.php">
                                     <li><img src="../../public/img/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
                                     </li>
                                 </a>
-                                <a href="./Usuario/index_.php">
+                                <a href="Usuario/index_.php">
                                     <li><img src="../../public/img/home.svg" width="40px" height="40px" style="margin-top: -18px;">
                                     </li>
                                 </a>
                             <?php } ?>
-
 
 
                         </ul>
@@ -103,40 +104,40 @@ if (isset($_SESSION["msg"])) {
 
         </div>
     </header>
-    <div  class="containerInicio">
-        
-          
+    <div class="containerInicio">
+
+
         <div class="parrafoInicio">
             <h1>Tienda la <br> Mano de Dios</h1>
 
-                <p class="fs-4" style="color: #77583e;">Nosotros queremos brindarles el mejor servicio y
+            <p class="fs-4" style="color: #77583e;">Nosotros queremos brindarles el mejor servicio y
                 <br> adaptarnos a sus necesidades para ser una
                 <br> microempresa conocida y poder mejorar nuestros
                 <br> servicios a ustedes.
-                </p>
+            </p>
 
             <?php
 
-                if (empty($_SESSION['correo'])) { ?>
-                    <a href="inicio/inicio.php"><button type="button" class="btn " style="width: 200px;"> Descubrelo</button></a>
+            if (empty($_SESSION['correo'])) { ?>
+                <a href="inicio/inicio.php"><button type="button" class="btn " style="width: 200px;"> Descubrelo</button></a>
 
             <?php } ?>
 
         </div>
-                
+
         <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active" id="divCarousel">
-                    <img src="../../public/img/tienda.jpg" alt="..." >
+                    <img src="../../public/img/tienda.jpg" alt="...">
                 </div>
                 <div class="carousel-item" id="divCarousel">
-                    <img src="../../public/img/tienbarri.jpg" alt="..." >
+                    <img src="../../public/img/tienbarri.jpg" alt="...">
                 </div>
                 <div class="carousel-item" id="divCarousel">
-                    <img src="../../public/img/tienbarri2.jpg" alt="..." >
+                    <img src="../../public/img/tienbarri2.jpg" alt="...">
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <footer class="footerContainer">
         <div class="contactos">

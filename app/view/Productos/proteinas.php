@@ -1,6 +1,7 @@
 <?php
 
-include("../model/Conexion.php");
+require_once("../../model/Conexion.php");
+
 $conexion = new conexion();
 $conn = $conexion->getConexion();
 ?>
@@ -11,12 +12,10 @@ $conn = $conexion->getConexion();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú</title>
-    <link rel="stylesheet" href="../../public/css/Productos/menu.css">
+    <link rel="stylesheet" href="../../../public/css/Productos/menu.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../../public/js/alerts.js"></script>
 </head>
 
 <body>
@@ -24,61 +23,55 @@ $conn = $conexion->getConexion();
         <div id="barranav">
             <div id="ContainerNav">
                 <div id="Logos">
-                    <img src="../../public/img/Producto/logo.png" width="350px" height="200px"
-                        style="padding-left: 10px; padding-top: 0px">
+                    <img src="../../../public/img/logo.png" width="350px" height="200px" style="padding-left: 10px; padding-top: 0px">
 
                     <form class="form-inline">
                         <div class="form-group">
-                            <input type="text" class="form-control"
-                                placeholder="Buscar...                                                                               🔎        "
-                                style="width: 450px; border-radius: 20px;">
+                            <input type="text" class="form-control" placeholder="Buscar...                                                                               🔎        " style="width: 450px; border-radius: 20px;">
                         </div>
                     </form>
                 </div>
+
 
                 <nav id="Nav">
                     <div id="NavList">
 
                         <ul id="Listas">
-                            <a href="inicio_index.php">
-                                <li><strong>Inicio</strong></li>
+                            <a href="../inicio_productos/inicio_index.php">
+                                <li><strong> Inicio </strong></li>
                             </a>
                             <a href="productos.php">
                                 <li><strong> Productos </strong></li>
                             </a>
 
-
                             <?php
                             session_start();
                             if (empty($_SESSION['correo'])) { ?>
-                                <a href="CreditosInicio.php">
-
+                                <a href="../CreditosInicio.php">
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="historia.php">
+                                <a href="../historia/historia.php">
                                     <li><strong> Sobre Nosotros </strong></li>
                                 </a>
-                                <a href="inicio/inicio.php"><button type="button" class="btn">Iniciar
+                                <a href="../inicio/inicio.php"><button type="button" class="btn">Iniciar
                                         Sesion</button></a>
 
                             <?php } else { ?>
-                                <a href="CreditosInicio.php">
+                                <a href="../CreditosInicio.php">
                                     <li><strong> Creditos </strong></li>
                                 </a>
-                                <a href="../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar
-                                        Sesión</button></a>
+                                <a href="../../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
 
-                                <a href="Usuario/carrito_compra.php">
-                                    <li><img src="../../public/img/Carrito.png" width="40px" height="40px"
-                                            style="margin-top: -18px;">
+                                <a href="../Usuario/carrito_compra.php">
+                                    <li><img src="../../../public/img/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
                                     </li>
                                 </a>
-                                <a href="usuario/index_.php">
-                                    <li><img src="../../public/img/home.svg" width="40px" height="40px"
-                                            style="margin-top: -18px;">
+                                <a href="../Usuario/index_.php">
+                                    <li><img src="../../../public/img/home.svg" width="40px" height="40px" style="margin-top: -18px;">
                                     </li>
                                 </a>
                             <?php } ?>
+
 
                         </ul>
 
@@ -95,7 +88,7 @@ $conn = $conexion->getConexion();
                 <br>
                 <br>
                 <div class="subtitulomenu">
-                    <a href="productos.php">
+                    <a href="../productos.php">
                         <h3>Productos</h3>
                     </a>
                 </div>
@@ -103,79 +96,79 @@ $conn = $conexion->getConexion();
                 <br>
                 <div class="productos">
                     <div class="imagenalimentos">
-                        <img src="../../public/img/Producto/alimentos.png.png" alt="">
+                        <img src="../../../public/img/Producto/alimentos.png.png" alt="">
                     </div>
                     <div class="productossubtitulo">
                         <details>
                             <summary>Alimentos</summary>
                             <br>
                             <ul>
-                                <li><a href="Productos/proteinas.php">Proteinas</a></li>
-                                <li><a href="Productos/verduras.php">Verduras y Frutas</a></li>
-                                <li><a href="Productos/granos.php">Granos</a></li>
+                                <li><a href="proteinas.php">Proteinas</a></li>
+                                <li><a href="verduras.php">Verduras y Frutas</a></li>
+                                <li><a href="granos.php">Granos</a></li>
                             </ul>
                         </details>
                     </div>
                 </div>
                 <div class="Aseo">
                     <div class="imagenaseo">
-                        <img src="../../public/img/Producto/aseopersonal.png.png" alt="">
+                        <img src="../../../public/img/Producto/aseopersonal.png.png" alt="">
                     </div>
                     <div class="productossubtitulo">
                         <details>
                             <summary>Aseo personal</summary>
                             <br>
                             <ul>
-                                <li><a href="Productos/higienefacial.php">Higiene facial</a></li>
-                                <li><a href="Productos/higienecorporal.php">Higiene corporal</a></li>
-                                <li><a href="Productos/higienebucal.php">Higiene bucal</a></li>
+                                <li><a href="higienefacial.php">Higiene facial</a></li>
+                                <li><a href="higienecorporal.php">Higiene corporal</a></li>
+                                <li><a href="higienebucal.php">Higiene bucal</a></li>
                             </ul>
                         </details>
                     </div>
                 </div>
                 <div class="Limpieza">
                     <div class="imagenlimpieza">
-                        <img src="../../public/img/Producto/aseohogar.png.png" alt="">
+                        <img src="../../../public/img/Producto/aseohogar.png.png" alt="">
                     </div>
                     <div class="productossubtitulo">
                         <details>
                             <summary>Limpieza del hogar</summary>
                             <br>
                             <ul>
-                                <li><a href="Productos/limpieza.php">Productos de limpieza</a></li>
+                                <li><a href="limpieza.php">Productos de limpieza</a></li>
                             </ul>
                         </details>
                     </div>
                 </div>
                 <div class="Otros">
                     <div class="imagenotros">
-                        <img src="../../public/img/Producto/otros.png.png" alt="">
+                        <img src="../../../public/img/Producto/otros.png.png" alt="">
                     </div>
                     <div class="productossubtitulo">
                         <details>
                             <summary>otros</summary>
                             <br>
                             <ul>
-                                <li><a href="Productos/otros.php">1</a></li>
+                                <li><a href="otros.php">1</a></li>
                             </ul>
                         </details>
                     </div>
                 </div>
             </div>
-            <div class="productospopulares">
+            <div class="proteina">
                 <div class="subtitulo">
-                    <h2>Productos populares</h2>
+                    <h2>Proteinas</h2>
                 </div>
                 <div class="productoscatalogo">
                     <!-- imagenes de los productos-->
                     <center>
                         <?php
-                        $sql = "SELECT * FROM productos";
+                        $sql = "SELECT * FROM productos p WHERE p.Categoria_PRO = 'Proteinas'";
                         $resultado = mysqli_query($conn, $sql);
                         while ($row = mysqli_fetch_array($resultado)) { ?>
 
                             <div id="div1">
-                                <form action="../controller/controllerCarrito.php" method="post">
+                                <form action="../PhpJadith/Cruds/Carrito_Guardar_Procutos.php" method="post">
                                     <div class="imagenpro">
                                         <img src="<?php echo $row['Img'] ?>" alt="" class="imgpro"><br>
                                     </div>
@@ -202,17 +195,6 @@ $conn = $conexion->getConexion();
 
                         <?php } ?>
                     </center>
-                    <?php
-                    if (isset($_SESSION["msg"])) {
-                        $msg = $_SESSION["msg"];
-
-                        if ($msg) {
-                            echo ("<script> $msg </script>");
-
-                            unset($_SESSION["msg"]);
-                        }
-                    }
-                    ?>
                 </div>
             </div>
         </div>
