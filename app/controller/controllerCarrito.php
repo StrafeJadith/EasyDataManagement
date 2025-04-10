@@ -1,6 +1,10 @@
 <?php
 require_once("../model/Conexion.php");
 require_once("../model/carritoModel.php");
+require("../../vendor/autoload.php");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 $conexion = new conexion();
 $carritoConn = new Carrito($conexion->getConexion());
@@ -75,9 +79,6 @@ if (isset($_GET['IDCancelar'])) {
     header("location: ../view/Usuario/carrito_compra.php");
 
 }
-
-
-
 //*Pagar producto con credito
 if (isset($_POST['mcredito'])) {
     $correo = $_SESSION["correo"];
@@ -116,6 +117,27 @@ if (isset($_POST['mcredito'])) {
         header("location: ../view/Usuario/carrito_compra.php");
         return;
     }
+}
+
+
+//Pagar con Efectivo
+
+if (isset($_POST['mefectivo'])) {
+    $pago = 001;
+    $correo = $_SESSION['correo'];
+
+
+    $carritoUs = $carritoConn->compraEfectivo($correo, $pago);
+    if ($carritoUs['mos0'] === false) {
+      die('error');
+    }else{
+        $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
+
+    }
+
+    header("location: ../view/Usuario/carrito_compra.php");
+
+
 }
 
 ?>
