@@ -113,7 +113,7 @@ class Carrito
 
     public function compraCredito($correo, $pago)
     {
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 5; $i++) {
             $verss["ver$i"] = true;
         }
 
@@ -140,16 +140,12 @@ class Carrito
             $verss["ver0"] = false;
             return $verss;
         }
+
         $estado1 = $rowEstado['Estado_CR'];
         $valorcr = $rowEstado['Valor_CR'];
 
-        if ($estado1 != "aceptado") {
-            $verss["ver1"] = false;
-            return $verss;
-        }
-
         if ($sumvent > $valorcr) {
-            $verss["ver2"] = false;
+            $verss["ver1"] = false;
             return $verss;
         }
 
@@ -159,38 +155,27 @@ class Carrito
         $sql = "INSERT INTO gasto_credito(Valor_GC, Fecha_GC, ID_US ) VALUES ($sumvent, '$fecha', $ID_US)";
         $result = mysqli_query($this->conn, $sql);
 
-        if (!$result) {
-            $verss["ver3"] = false;
-            return $verss;
-        }
 
-        $query7 = "SELECT ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
+        $query7 = "SELECT ID_PRO, ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
         $result7 = mysqli_query($this->conn, $query7);
 
         if (!$result7) {
-            $verss["ver4"] = false;
+            $verss["ver2"] = false;
             return $verss;
         }
 
-        //! Adrian por favor pon condiciones si el codigo falla me voy a matar si esto sigue asi
+
         $row1 = $result7->fetch_array(MYSQLI_NUM);
         $ID_PROO = $row1[0];
         $sql = "SELECT Nombre_US FROM usuarios WHERE ID_US = $ID_US";
         $consulta = mysqli_query($this->conn, $sql);
 
-        if (!$consulta) {
-            $verss["ver5"] = false;
-            return $verss;
-        }
 
         //*Se realizan consultas y se guardan los datos necesarios del usuario, producto y tipo de pago
         $row = mysqli_fetch_assoc($consulta);
         $nombre = $row['Nombre_US'];
 
-        $sql2 = "SELECT Nombre_PRO FROM productos WHERE ID_PRO = $ID_PROO";
-        $consulta2 = mysqli_query($this->conn, $sql2);
-
-        $row = mysqli_fetch_assoc($consulta2);
+        $row = mysqli_fetch_assoc($result7);
         $nombre_producto = $row['Nombre_PRO'];
 
 
@@ -210,11 +195,50 @@ class Carrito
 
         }
 
+        include("../helper/mails.php");
+
+
+        $sql = "UPDATE credito SET Valor_CR = $gastocre WHERE Correo_CR = '$correo'";
+        $result3 = mysqli_query($this->conn, $sql);
+
+
+        $query3 = "INSERT INTO detalle_de_venta( FECHA_DV, TOTAL_DV, ID_US, ID_MTP) VALUES ( '$fecha', $sumvent, $ID_US, $pago)";
+        $result4 = mysqli_query($this->conn, $query3);
+
+        $query5 = " UPDATE ventas set Estado_VENT = 'Confirmado' where ID_US = $ID_US";
+        $result5 = mysqli_query($this->conn, $query5);
+
+        $query77 = "SELECT ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
+        $result77 = mysqli_query($this->conn, $query7);
+
+        $row22 = $result77->fetch_array(MYSQLI_NUM);
+        $ID_PRO = $row22[0];
+
+        $query6 = "SELECT cantidad_existente FROM productos  where ID_PRO = $ID_PRO";
+        $result6 = mysqli_query($this->conn, $query6);
+
+        if (!$result6) {
+            $verss["ver3"] = false;
+            return $verss;
+        }
+
+        $row = $result6->fetch_array(MYSQLI_NUM);
+        $cantEx = (int) $row[0];
+
+
+        $CantNueva = (int) ($cantEx - $cantidad);
+
+        $query1 = " UPDATE productos SET cantidad_existente = $CantNueva WHERE ID_PRO = $ID_PRO ";
+        $result1 = mysqli_query($this->conn, $query1);
+
+        return $verss;
+
     }
 
 
-//pagar Efectivo
- public function compraEfectivo($correo, $pago){
+    //pagar Efectivo
+    public function compraEfectivo($correo, $pago)
+    {
         for ($i = 0; $i <= 0; $i++) {
             $mostrar["mos$i"] = true;
         }
@@ -276,7 +300,7 @@ class Carrito
 
             } else {
                 $mostrar["mos0"] = true;
-               
+
 
                 $sql = "SELECT Nombre_US FROM usuarios WHERE ID_US = $ID_CL";
                 $consulta = mysqli_query($this->conn, $sql);
@@ -384,7 +408,7 @@ class Carrito
             }
         }
 
-}
+    }
 
 }
 
