@@ -13,7 +13,7 @@ if (isset($_POST["monto"])) {
 
     $montoUs = $userConn->abonoEfectivo($monto, $correo);
 
-    if ($montoUs["ver0"] === False) {
+    if ($montoUs["ver0"]) {
         $_SESSION["msg"] = "error('Sin solicitud','No ha solicitado un credito aun.')";
         header("location: ../view/Usuario/metodo_abono.php");
         return;

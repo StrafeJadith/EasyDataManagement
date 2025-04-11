@@ -156,7 +156,7 @@ class Carrito
         $result = mysqli_query($this->conn, $sql);
 
 
-        $query7 = "SELECT ID_PRO, ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
+        $query7 = "SELECT ID_PRO FROM productos WHERE Nombre_PRO = '$nombre'";
         $result7 = mysqli_query($this->conn, $query7);
 
         if (!$result7) {
@@ -171,11 +171,15 @@ class Carrito
         $consulta = mysqli_query($this->conn, $sql);
 
 
+
         //*Se realizan consultas y se guardan los datos necesarios del usuario, producto y tipo de pago
         $row = mysqli_fetch_assoc($consulta);
         $nombre = $row['Nombre_US'];
 
-        $row = mysqli_fetch_assoc($result7);
+        $sql2 = "SELECT Nombre_PRO FROM productos WHERE ID_PRO = $ID_PROO";
+        $consulta2 = mysqli_query($this->conn, $sql2);
+
+        $row = mysqli_fetch_assoc($consulta2);
         $nombre_producto = $row['Nombre_PRO'];
 
 
@@ -231,6 +235,7 @@ class Carrito
         $query1 = " UPDATE productos SET cantidad_existente = $CantNueva WHERE ID_PRO = $ID_PRO ";
         $result1 = mysqli_query($this->conn, $query1);
 
+        $verss["ver4"] = true;
         return $verss;
 
     }
