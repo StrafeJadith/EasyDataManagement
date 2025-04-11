@@ -27,7 +27,7 @@ class Usuario
         $rowCr = mysqli_fetch_assoc($resultConCr);
 
         //*Se maneja el error sino existe una cuenta credito
-        if (!$rowCr) {
+        if (empty($rowCr)) {
             $verss["ver0"] = False;
             return $verss;
         }
@@ -95,6 +95,7 @@ class Usuario
             $accoff = "UPDATE credito SET Estado_ACT = 0 WHERE Correo_Cr = '$correo'";
             $aresult = mysqli_query($this->conn, $accoff);
             $verss["ver5"] = True;
+            return $verss;
         }
 
 

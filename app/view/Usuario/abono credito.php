@@ -162,7 +162,7 @@ if (empty($_SESSION['correo'])) {
                 $fechasCr = "Sin credito realizado";
                 $AbonoMonto = 0;
                 $CreditoRestante = 0;
-                if (!empty($rowCr["Valor_CR"])) {
+                if (!empty($rowCr["Valor_Total"])) {
                     $creditoTotal = $rowCr['Valor_Total'];
                     $fechasCr = $rowCr['Fecha_CR'];
                     $consultarIdAbono = "SELECT ID_US FROM usuarios WHERE Correo_US = '$correo'";
