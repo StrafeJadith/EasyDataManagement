@@ -91,32 +91,28 @@ if (isset($_POST['mcredito'])) {
         header("location: ../view/Usuario/carrito_compra.php");
         return;
     }
+
     if ($verss["ver1"] === false) {
-        $_SESSION["msg"] = "error('Credito inactivo','No puede pagar con creditos porque no tiene uno activo en la tienda.')";
-        header("location: ../view/Usuario/carrito_compra.php");
-        return;
-    }
-    if ($verss["ver2"] === false) {
         $_SESSION["msg"] = "error('Error','No tienes suficiente credito para realizar esta compra')";
         header("location: ../view/Usuario/carrito_compra.php");
         return;
     }
+
+
+    if ($verss["ver2"] === false) {
+        $_SESSION["msg"] = "error('Error','El producto no se encuentra disponible')";
+        header("location: ../view/Usuario/carrito_compra.php");
+        return;
+    }
     if ($verss["ver3"] === false) {
-        $_SESSION["msg"] = "error('Error','Error al guardar gasto de credito')";
+        $_SESSION["msg"] = "error('Error','Producto no disponible')";
         header("location: ../view/Usuario/carrito_compra.php");
         return;
     }
 
-    if ($verss["ver4"] === false) {
-        $_SESSION["msg"] = "error('Error','No se encontraron datos')";
-        header("location: ../view/Usuario/carrito_compra.php");
-        return;
-    }
-    if ($verss["ver3"] === true) {
-        $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
-        header("location: ../view/Usuario/carrito_compra.php");
-        return;
-    }
+    $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
+    header("location: ../view/Usuario/carrito_compra.php");
+    return;
 }
 
 
@@ -129,8 +125,8 @@ if (isset($_POST['mefectivo'])) {
 
     $carritoUs = $carritoConn->compraEfectivo($correo, $pago);
     if ($carritoUs['mos0'] === false) {
-      die('error');
-    }else{
+        die('error');
+    } else {
         $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
 
     }
