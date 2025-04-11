@@ -109,20 +109,26 @@ if (empty($_SESSION['correo'])) {
                             <a href="../CreditosInicio.php">
                                 <li><strong> Creditos </strong></li>
                             </a>
-                            <a href="../historia/historia.php">
-                                <li><strong> Sobre Nosotros </strong></li>
-                            </a>
+                            
                             <?php
 
                             if (empty($_SESSION['correo'])) { ?>
                                 <a href="../inicio/inicio.php"><button type="button" class="btn">Iniciar
                                         Sesion</button></a>
+                                        <a href="../historia.php">
+                                <li><strong> Sobre Nosotros </strong></li>
+                            </a>
 
                             <?php } else { ?>
                                 <a href="../../controller/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar Sesión</button></a>
 
                                 <a href="../Usuario/carrito_compra.php">
                                     <li><img src="../../../public/img/carrito.png" width="40px" height="40px" style="margin-top: -18px;">
+                                    </li>
+                                </a>
+                                <a href="../Usuario/index_.php">
+                                    <li><img src="../../../public/img/home.svg" width="40px" height="40px"
+                                            style="margin-top: -18px;">
                                     </li>
                                 </a>
                             <?php } ?>
