@@ -63,7 +63,8 @@ if (empty($_SESSION['correo'])) {
                                         Sesion</button></a>
 
                             <?php } else { ?>
-                                <a href="../../model/controladorcerrarsesion.php"><button type="button" class="btn">Cerrar
+                                <a href="../../controller/controladorcerrarsesion.php"><button type="button"
+                                        class="btn">Cerrar
                                         Sesión</button></a>
 
                                 <a href="./carrito_compra.php">
