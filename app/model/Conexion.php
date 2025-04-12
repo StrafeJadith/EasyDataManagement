@@ -10,7 +10,7 @@ class conexion
     public function __construct()
     {
 
-        $this->conn = mysqli_connect("localhost", "root", "2906", "tienda_la_mano_de_dios");
+        $this->conn = mysqli_connect("localhost", "root", "", "tienda_la_mano_de_dios");
     }
 
 
