@@ -11,6 +11,15 @@
 
     $conexion = new Conexion();
     $conn = $conexion->getConexion();
+
+    $productosPorPagina = 3;
+    $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $offset = ($paginaActual - 1) * $productosPorPagina;
+    
+    $totalProductoQuery = "SELECT COUNT(*) as total FROM productos";
+    $totalResult = mysqli_query($conn, $totalProductoQuery);
+    $totalRow = mysqli_fetch_assoc($totalResult);
+    $totalPaginas = ceil($totalRow['total'] / $productosPorPagina);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +81,7 @@
                         
                             <?php
     
-                                $query = "SELECT c.Nombre_CAT,p.* FROM productos p, categoria_producto c where p.ID_CAT = c.ID_CAT";
+                                $query = "SELECT c.Nombre_CAT,p.* FROM productos p, categoria_producto c where p.ID_CAT = c.ID_CAT LIMIT $productosPorPagina OFFSET $offset";
                                 $resultado = mysqli_query($conn,$query);
                                 
                                 
@@ -118,7 +127,27 @@
                             }
                         }
                     ?>
+                
+                <div class="paginacion">
 
+                                <?php if ($paginaActual > 1): ?>
+                                    <a href="?pagina=<?php echo $paginaActual - 1; ?>">
+                                        <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior">
+                                    </a>
+
+                                    <?php else: ?>
+                                        <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior" style="opacity: 0.5; cursor: default;">
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($paginaActual < $totalPaginas): ?>
+                                        <a href="?pagina=<?php echo $paginaActual + 1; ?>">
+                                            <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente">
+                                        </a>
+                                    
+                                    <?php else: ?>
+                                        <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente" style="opacity: 0.5; cursor: default;">
+                                    <?php endif; ?>
+                            </div>
                 </div>
             </div>
         </div>
