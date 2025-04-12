@@ -11,6 +11,14 @@
     $conexion = new Conexion();
     $conn = $conexion->getConexion();
 
+    $creditosPorPagina = 4;
+    $paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $offset = ($paginaActual - 1) * $creditosPorPagina;
+
+    $totalCreditosQuery = "SELECT COUNT(*) as total FROM credito";
+    $totalResult = mysqli_query($conn, $totalCreditosQuery);
+    $totalRow = mysqli_fetch_assoc($totalResult);
+    $totalPaginas = ceil($totalRow['total'] / $creditosPorPagina);
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +74,7 @@
                             <?php 
                                 $query ="SELECT c.ID_CR, u.ID_US, u.Nombre_US, c.Correo_CR, c.Telefono_CR,
                                         c.Direccion_CR, c.Estado_CR, c.Fecha_CR, c.Valor_CR
-                                        FROM credito c, usuarios u WHERE c.ID_US = u.ID_US";  
+                                        FROM credito c, usuarios u WHERE c.ID_US = u.ID_US LIMIT $creditosPorPagina OFFSET $offset";  
                                 $resul_tareas = mysqli_query($conn, $query);
 
                                 while($row = mysqli_fetch_array($resul_tareas)){
@@ -120,7 +128,27 @@
                         ?>
                         
                     </table>
+                    
+                    <div class="paginacion">
 
+                                <?php if ($paginaActual > 1): ?>
+                                    <a href="?pagina=<?php echo $paginaActual - 1; ?>">
+                                        <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior">
+                                    </a>
+
+                                    <?php else: ?>
+                                        <img src="../../../public/img/Administrador/FlechaIzquierda.png" class="Flechas" alt="Anterior" style="opacity: 0.5; cursor: default;">
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($paginaActual < $totalPaginas): ?>
+                                        <a href="?pagina=<?php echo $paginaActual + 1; ?>">
+                                            <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente">
+                                        </a>
+                                    
+                                    <?php else: ?>
+                                        <img src="../../../public/img/Administrador/FlechaDerecha.png" class="Flechas" alt="Siguiente" style="opacity: 0.5; cursor: default;">
+                                    <?php endif; ?>
+                            </div>
                 </div>
             </div>
         </div>
