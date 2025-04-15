@@ -21,7 +21,7 @@ class Carrito
     {
 
         //?Se crea un array asociativo con valores verdaderos
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i <= 6; $i++) {
             $verss["ver$i"] = true;
         }
 
@@ -45,7 +45,10 @@ class Carrito
             $verss["cantex"] = $cantex;
             return $verss;
         }
-
+        if($cantidad <=0){
+            $verss["ver5"] = false;
+            return $verss;
+        }
         //?Se obtienen los valores del precio total y fechas de obtencion
         $fecha = date("Y-m-d");
         $valor_total = (int) ($precio * $cantidad);

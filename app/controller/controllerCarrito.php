@@ -1,6 +1,7 @@
 <?php
 require_once("../model/Conexion.php");
 require_once("../model/carritoModel.php");
+require_once("../helper/response.php");
 require("../../vendor/autoload.php");
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -35,27 +36,21 @@ if (isset($_POST["Guardar"])) {
 
 
     if ($carritoUs["ver1"] === false) {
-        $_SESSION["msg"] = "error('Error en la consulta','Test')";
-        header("location: ../view/productos.php");
-        return;
+        redireccionarCarrito("error('Error en la consulta','Test')");
     }
 
     if ($carritoUs["cantidad"] > $carritoUs["cantex"]) {
-        $_SESSION["msg"] = "error('Error','La cantidad escogida {$carritoUs['cantidad']} es mayor a la cantidad existente {$carritoUs['cantex']} del producto' );";
-        header("location: ../view/productos.php");
-        return;
-
+        redireccionarCarrito("error('Error','La cantidad escogida {$carritoUs['cantidad']} es mayor a la cantidad existente {$carritoUs['cantex']} del producto');");
     }
-
+    if($carritoUs["ver5"] ===false){
+        redireccionarCarrito("error('Digite un numero apto', 'Digite un numero mayor a 0 ')");
+    }
     if ($carritoUs["ver2"] === false) {
-        $_SESSION["msg"] = "error('Error','No se pudo añadir el producto al carrito')";
-        header("location: ../view/productos.php");
-        return;
+        redireccionarCarrito("error('Error','No se pudo añadir el producto al carrito');");
     }
 
-    $_SESSION["msg"] = "success('¡Producto agregado exitosamente!','El producto $nombre fue agregado al carrito, dirijase a el para aceptar la compra')";
-    header("location: ../view/productos.php");
-    return;
+    redireccionarCarrito("success('¡Producto agregado exitosamente','El producto $nombre fue agregado al carrito')");
+    
 }
 
 
