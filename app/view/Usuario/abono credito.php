@@ -155,7 +155,10 @@ if (empty($_SESSION['correo'])) {
 
                 <?php
                 $correo = $_SESSION['correo'];
-                $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo' AND Estado_ACT = 1";
+                $ConsultaCr = "SELECT c.ID_CR, c.Valor_CR, c.Valor_Total, c.Estado_ACT,c.Fecha_CR, ac.Monto_Ac, u.Correo_US from credito c
+                               JOIN usuarios u on u.ID_US = c.ID_US
+                               JOIN abono_credito ac on ac.ID_US = u.ID_US
+                               where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
                 $resultConCr = mysqli_query($conn, $ConsultaCr);
                 $rowCr = mysqli_fetch_assoc($resultConCr);
                 $creditoTotal = 0;
