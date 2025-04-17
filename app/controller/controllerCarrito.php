@@ -97,9 +97,7 @@ if (isset($_POST['mcredito'])) {
         carritoCompra("error('Error','Producto no disponible')");
     }
 
-    $_SESSION["msg"] = "success('¡Compra exitosa!','Compra realizada con exito')";
-    header("location: ../view/Usuario/carrito_compra.php");
-    return;
+    carritoCompra("success('¡Compra exitosa!','Compra realizada con exito')");
 
 }
 
