@@ -6,4 +6,10 @@ function redireccionarCarrito(string $msg, string $location = "../view/productos
 
 }
 
+function carritoCompra(string $msg, string $location = "../view/Usuario/carrito_compra.php"){
+    $_SESSION["msg"] = $msg;
+    header("location: $location");
+    exit;
+
+}
 ?>
