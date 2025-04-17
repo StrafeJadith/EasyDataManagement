@@ -168,14 +168,14 @@ if (empty($_SESSION['correo'])) {
 
             </ul>
         </nav>
-        <div class="padre">
+        <div class="padre2">
             <form action="../../controller/controllerInicio.php" method="post">
                 <div>
-                    <label for="">Solicitud nueva de credito</label>
+                    <h2 class="TituloNC">Solicitud nuevo credito</h2>
+                    <br>
+                    <input type="number" name="monto2" placeholder="Digite un monto" class="caja1">
                     <br><br>
-                    <input type="number" name="monto2" placeholder="Digite un monto">
-                    <br><br>
-                    <input type="submit" name="SolicitarNC" value="Solicitar un nuevo credito">
+                    <input type="submit" name="SolicitarNC" value="Solicitar un nuevo credito" class="caja2">
             </form>
         </div>
     </div>

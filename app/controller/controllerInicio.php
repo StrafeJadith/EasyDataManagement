@@ -126,10 +126,9 @@ if (isset($_REQUEST['SolicitarNC'])) {
 
     $estado = ("En espera");
     $montoNC = $_REQUEST['monto2'];
-    var_dump($montoNC);
     $fechaNC = date("Y-m-d H:i:s");
 
-    if (!empty($monto)) {
+    if (!empty($montoNC)) {
 
         $NuevoCredito = $personamodel->SolicitudNuevaCredito($montoNC, $fechaNC, $estado);
 

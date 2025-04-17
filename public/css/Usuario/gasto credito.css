@@ -205,6 +205,49 @@ a .btn:hover {
 
 /**cuerpo*/
 
+/*solicitud nuevo credito body */
+
+.TituloNC{
+    font-weight: bold;
+}
+
+.caja1{
+    
+    border: none;
+    border-radius: 20px;
+    width: 300px;
+    height: 45px;
+    position: relative;
+    left: 28px;
+    
+}
+
+.caja2{
+    border-radius: 20px;
+    background-color: #804e23;
+    color: white;
+    font-weight: bold;
+    border: none;
+    width: 240px;
+    height: 40px;
+    position: relative;
+    left: 56px;
+    top: 10px;
+    
+}
+
+/*soliitud nuevo credito body */
+
+.padre2{
+    
+    width: 50%;
+    height: 200px;
+    position: relative;
+    left: 530px;
+    top: 260px;
+    
+}
+
 .padre{
     
     width: 50%;
