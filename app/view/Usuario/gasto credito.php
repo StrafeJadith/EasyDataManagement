@@ -187,33 +187,27 @@ if (empty($_SESSION['correo'])) {
                         $IdeUs = $rowAb['ID_US'];
 
                         //TRAER LOS GASTOS DEL USUARIO
-                        $ConsultaCr = "SELECT sum(Valor_GC) as gasto FROM gasto_credito WHERE ID_US = $IdeUs";
+                        $ConsultaCr = "SELECT * FROM gasto_credito WHERE ID_US = $IdeUs";
                         $resultConCr = mysqli_query($conn, $ConsultaCr);
-                        $rowCr2 = mysqli_fetch_assoc($resultConCr);
-                        $gasto_Credito = $rowCr2["gasto"];
+                    }
 
-                        $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-                        $resultado = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($resultado) > 0) {
-                        }
+                    ?>
+                    <tr>
+                        <td><strong>Credito Total</strong></td>
+                        <td><strong>$<?= $creditoTotal ?></strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gastos</strong></td>
+                        <td><strong>Fechas</strong></td>
+                    </tr>
+                    <?php
 
-                        ?>
+                    $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
+                    $resultado = mysqli_query($conn, $sql);
+                    if (mysqli_num_rows($resultado) > 0) { ?>
                         <tr>
                             <td><strong>Estado Credito</strong></td>
                             <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
-                        </tr>
-                        <tr>
-
-                            <td><strong>Credito Total</strong></td>
-                            <td><strong>$<?= $creditoTotal ?></strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gastos</strong></td>
-                            <td><strong>$<?= $gasto_Credito ?></strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Credito restante</strong></td>
-                            <td><strong><?php echo $rowCr['Valor_CR'] ?></strong></td>
                         </tr>
                     <?php }
                     ?>
