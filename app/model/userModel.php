@@ -20,9 +20,7 @@ class Usuario
         }
 
         //*Consulta de credito
-        $ConsultaCr = "SELECT c.ID_CR, c.Valor_CR, c.Valor_Total, c.Estado_ACT,c.Fecha_CR, ac.Monto_Ac, u.Correo_US from credito c
-                       JOIN usuarios u on u.ID_US = c.ID_US
-                       JOIN abono_credito ac on ac.ID_US = u.ID_US
+        $ConsultaCr = "SELECT c.* from credito c
                        where c.estado_ACT = 1 and c.Correo_CR = '$correo'; "; 
         $resultConCr = mysqli_query($this->conn, $ConsultaCr);
 
@@ -38,9 +36,11 @@ class Usuario
         $creditoTotal = $rowCr['Valor_Total'];
         $ID_US = $rowCr['ID_US'];
 
-        $consultaAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = '$ID_US'";
+        $consultaAbono = "SELECT sum(ac.Monto_AC) as MontoSuma FROM abono_credito ac
+                          JOIN credito c ON c.ID_CR = ac.ID_CR
+                          WHERE ac.ID_US = $ID_US;";
         $resultAbono2 = mysqli_query($this->conn, $consultaAbono);
-        $rowAbono = mysqli_fetch_array($resultAbono2, MYSQLI_ASSOC);
+        $rowAbono = mysqli_fetch_assoc($resultAbono2);
         $abonoMonto = $rowAbono['MontoSuma'];
 
         $estadoCr = "";
@@ -50,13 +50,17 @@ class Usuario
         $resp = ($monto % 100 == 0);
         $valorLimite = $monto + $abonoMonto;
 
-        $sql = "SELECT us.ID_US FROM usuarios us  WHERE Correo_US = '$correo'";
+        $sql = "SELECT us.ID_US, c.ID_CR , c.Estado_ACT FROM usuarios us 
+                JOIN credito c ON c.ID_US = us.ID_US 
+                WHERE Correo_US = '$correo'
+                AND c.Estado_ACT = 1";
+
         $sqlResult = mysqli_query($this->conn, $sql);
 
 
         $rowIdUs = mysqli_fetch_assoc($sqlResult);
         $ID_Usuario = $rowIdUs["ID_US"];
-
+        $ID_CR = $rowIdUs["ID_CR"];
         //*Verificaciones de monto aceptable
         if (!$resp) {
             $verss["ver1"] = False;
@@ -85,7 +89,7 @@ class Usuario
         $estadoCr = $rowCredit["Estado_CR"];
 
         //*Insercion del pago en la base de datos
-        $query = "INSERT INTO abono_credito(Monto_AC,ID_US) VALUES ($monto,$ID_Usuario)";
+        $query = "INSERT INTO abono_credito(Monto_AC,ID_US,ID_CR) VALUES ($monto,$ID_Usuario, $ID_CR)";
         $result = mysqli_query($this->conn, $query);
 
         if (!$result) {
