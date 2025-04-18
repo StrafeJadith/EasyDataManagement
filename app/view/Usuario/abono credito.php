@@ -155,9 +155,8 @@ if (empty($_SESSION['correo'])) {
 
                 <?php
                 $correo = $_SESSION['correo'];
-                $ConsultaCr = "SELECT c.ID_CR, c.Valor_CR, c.Valor_Total, c.Estado_ACT,c.Fecha_CR, ac.Monto_Ac, u.Correo_US from credito c
-                               JOIN usuarios u on u.ID_US = c.ID_US
-                               JOIN abono_credito ac on ac.ID_US = u.ID_US
+                $ConsultaCr = "SELECT c.* , ac.Monto_Ac, ac.ID_CR from abono_credito ac
+                               JOIN credito c on c.ID_CR = ac.ID_CR
                                where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
                 $resultConCr = mysqli_query($conn, $ConsultaCr);
                 $rowCr = mysqli_fetch_assoc($resultConCr);
@@ -173,14 +172,12 @@ if (empty($_SESSION['correo'])) {
                     $rowAb = mysqli_fetch_assoc($resultIdAbono);
                     $IdeUs = $rowAb['ID_US'];
 
-                    $congastoAbono2 = "SELECT ID_AC FROM abono_credito WHERE ID_US = $IdeUs";
+                    $congastoAbono2 = "SELECT sum(ac.Monto_AC) as MontoSuma FROM abono_credito ac
+                                       JOIN credito c ON c.ID_CR = ac.ID_CR
+                                       WHERE ac.ID_US = $IdeUs 
+                                       AND c.Estado_ACT = 1;";
                     $resultAbono2 = mysqli_query($conn, $congastoAbono2);
                     $rowConGast = mysqli_fetch_assoc($resultAbono2);
-                    if (!empty($rowConGast)) {
-                        $IdAc = $rowConGast["ID_AC"];
-                    }
-                    $IdAc = 0;
-
 
 
                     $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs";
