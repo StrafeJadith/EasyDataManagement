@@ -160,7 +160,11 @@ if (empty($_SESSION['correo'])) {
                                where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
                 $resultConCr = mysqli_query($conn, $ConsultaCr);
                 $rowCr = mysqli_fetch_assoc($resultConCr);
-                $creditoTotal = 0;
+
+                $consultaValorTotalCr = "SELECT Valor_Total FROM credito WHERE Correo_CR = '$correo'";
+                $resultConsultaValorTotalCr = mysqli_query($conn,$consultaValorTotalCr);
+                $rowCredito = mysqli_fetch_array($resultConsultaValorTotalCr,MYSQLI_ASSOC);
+                $creditoTotal = $rowCredito['Valor_Total'];
                 $fechasCr = "Sin credito realizado";
                 $AbonoMonto = 0;
                 $CreditoRestante = 0;

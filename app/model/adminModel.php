@@ -231,7 +231,19 @@ class Administrador{
 
         // ELIMINAR CREDITOS
 
+        
         public function eliminarCredito($ID){
+
+            $searchQuery = "SELECT * FROM abono_credito WHERE ID_CR = $ID";
+            $resultSearch = mysqli_query($this->conn,$searchQuery);
+            $row = mysqli_fetch_array($resultSearch,MYSQLI_ASSOC);
+            $ID_CR = $row['ID_CR'];
+            $_SESSION['id_cr'] = $ID_CR;
+            
+            if(mysqli_num_rows($resultSearch)>0){
+                return $_SESSION['id_cr'];
+            }
+
             $eliminar = "DELETE FROM credito WHERE ID_CR = '$ID'";
             return mysqli_query($this -> conn, $eliminar);
         }
