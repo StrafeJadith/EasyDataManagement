@@ -155,17 +155,18 @@ if (empty($_SESSION['correo'])) {
 
                 <?php
                 $correo = $_SESSION['correo'];
-                $ConsultaCr = "SELECT c.* , ac.Monto_Ac, ac.ID_CR from abono_credito ac
-                               JOIN credito c on c.ID_CR = ac.ID_CR
-                               where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
+                $ConsultaCr = "SELECT * FROM credito
+                               WHERE Correo_CR = '$correo'
+                               AND Estado_ACT = 1";
                 $resultConCr = mysqli_query($conn, $ConsultaCr);
                 $rowCr = mysqli_fetch_assoc($resultConCr);
 
                 $consultaValorTotalCr = "SELECT Valor_Total FROM credito WHERE Correo_CR = '$correo'";
                 $resultConsultaValorTotalCr = mysqli_query($conn,$consultaValorTotalCr);
-                $rowCredito = mysqli_fetch_array($resultConsultaValorTotalCr,MYSQLI_ASSOC);
-                $creditoTotal = $rowCredito['Valor_Total'];
                 $fechasCr = "Sin credito realizado";
+                if(empty($rowCr["Valor_Total"])){
+                    $creditoTotal =0;
+                }
                 $AbonoMonto = 0;
                 $CreditoRestante = 0;
                 if (!empty($rowCr["Valor_Total"])) {
@@ -184,10 +185,16 @@ if (empty($_SESSION['correo'])) {
                     $rowConGast = mysqli_fetch_assoc($resultAbono2);
 
 
-                    $conGastoAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = $IdeUs";
+                    $conGastoAbono = "SELECT sum(ac.Monto_AC) as MontoSuma FROM abono_credito ac
+                                       JOIN credito c ON c.ID_CR = ac.ID_CR
+                                       WHERE ac.ID_US = $IdeUs 
+                                       AND c.Estado_ACT = 1";
                     $resultAbono = mysqli_query($conn, $conGastoAbono);
                     $rowAbono = mysqli_fetch_assoc($resultAbono);
-                    $AbonoMonto = $rowAbono['MontoSuma'];
+                    $AbonoMonto = 0;
+                    if(!empty($rowAbono["MontoSuma"])){
+                        $AbonoMonto = $rowAbono['MontoSuma'];
+                    }
 
                     $CreditoRestante = $creditoTotal - $AbonoMonto;
                     $_SESSION["credRest"] = $CreditoRestante;
