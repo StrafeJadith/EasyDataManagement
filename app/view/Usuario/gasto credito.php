@@ -11,9 +11,6 @@ if (empty($_SESSION['correo'])) {
     die();
 }
 
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -216,11 +213,12 @@ if (empty($_SESSION['correo'])) {
                         $resultConCr = mysqli_query($conn, $ConsultaCr);
                     
                         //restante del credito
-                        $sql2 = "SELECT * FROM gasto_credito WHERE ID_US = '$IdeUs'";
+                        $sql2 = "SELECT SUM(Valor_GC) AS total FROM gasto_credito WHERE ID_US = $IdeUs";
                         $ejecucion = mysqli_query($conn, $sql2);
-                        $row = mysqli_fetch_array($ejecucion);
-                        $gasto_credito = $row['Valor_GC'];
-                        
+                        //para taerme los datos de una consulta
+                        if ($fila = $ejecucion->fetch_assoc()) {
+                            $gasto_credito = $fila['total'];
+                        }
                         $Credito_Restante = $creditoTotal - $gasto_credito;
                     }
 
