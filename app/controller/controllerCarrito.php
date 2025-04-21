@@ -36,7 +36,7 @@ if (isset($_POST["Guardar"])) {
 
 
     if ($carritoUs["ver1"] === false) {
-        redireccionarCarrito("error('Error en la consulta','Test')");
+        redireccionarCarrito("error('Error en la consulta','Test')","");
     }
 
     if ($carritoUs["cantidad"] > $carritoUs["cantex"]) {

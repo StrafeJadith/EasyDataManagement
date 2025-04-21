@@ -381,14 +381,15 @@
                     
         $eliminarCR = $AdminConnect -> eliminarCredito($ID);
 
-        if($eliminarCR){
-            $_SESSION["msg"] = "success('¡Eliminado!','Registro eliminado satisfactoriamente')";
-           
+        if($_SESSION['id_cr']){
+
+            $_SESSION["msg"] = "error('¡Error!','El usuario cuenta con registros activos en la tabla Abono Credito')";
+
         }else{
-            $_SESSION["msg"] = "answer('¡Campos vacios!','Por favor digite el numero de id al cual desea eliminar')";
+            $_SESSION["msg"] = "success('¡Eliminado!','Registro eliminado satisfactoriamente')";
         }
         header("location: ../view/Admin/Creditos.php");
-                           
+
     }
 
 ?>

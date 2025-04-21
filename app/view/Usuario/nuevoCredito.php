@@ -194,6 +194,9 @@ if (empty($_SESSION['correo'])) {
 
 
     ?>
+
+    <script src="../../../public/js/alerts.js"></script>
+    <script src="../../../public/js/pagos.js"></script>
     <footer class=" footerContainer ">
         <div class=" contactos ">
             <h1>Contactanos</h1>

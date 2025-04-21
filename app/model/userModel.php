@@ -13,14 +13,15 @@ class Usuario
     }
 
     public function abonoEfectivo($monto, $correo)
-    {   
+    {
         //?Se crea un array asociativo con valores verdaderos
-        for($i = 0; $i<=6; $i++){
+        for ($i = 0; $i <= 6; $i++) {
             $verss["ver$i"] = true;
         }
 
         //*Consulta de credito
-        $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo' AND Estado_ACT = 1";
+        $ConsultaCr = "SELECT c.* from credito c
+                       where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
         $resultConCr = mysqli_query($this->conn, $ConsultaCr);
 
 
@@ -35,25 +36,32 @@ class Usuario
         $creditoTotal = $rowCr['Valor_Total'];
         $ID_US = $rowCr['ID_US'];
 
-        $consultaAbono = "SELECT sum(Monto_AC) as MontoSuma FROM abono_credito WHERE ID_US = '$ID_US'";
+        $consultaAbono = "SELECT sum(ac.Monto_AC) as MontoSuma FROM abono_credito ac
+                          JOIN credito c ON c.ID_CR = ac.ID_CR
+                          WHERE ac.ID_US = $ID_US
+                          AND Estado_ACT = 1;";
         $resultAbono2 = mysqli_query($this->conn, $consultaAbono);
-        $rowAbono = mysqli_fetch_array($resultAbono2, MYSQLI_ASSOC);
+        $rowAbono = mysqli_fetch_assoc($resultAbono2);
         $abonoMonto = $rowAbono['MontoSuma'];
 
         $estadoCr = "";
-        
+
 
         //*Verificacion de monto apto
         $resp = ($monto % 100 == 0);
         $valorLimite = $monto + $abonoMonto;
 
-        $sql = "SELECT us.ID_US FROM usuarios us  WHERE Correo_US = '$correo'";
+        $sql = "SELECT us.ID_US, c.ID_CR , c.Estado_ACT FROM usuarios us 
+                JOIN credito c ON c.ID_US = us.ID_US 
+                WHERE Correo_US = '$correo'
+                AND c.Estado_ACT = 1";
+
         $sqlResult = mysqli_query($this->conn, $sql);
 
 
         $rowIdUs = mysqli_fetch_assoc($sqlResult);
         $ID_Usuario = $rowIdUs["ID_US"];
-
+        $ID_CR = $rowIdUs["ID_CR"];
         //*Verificaciones de monto aceptable
         if (!$resp) {
             $verss["ver1"] = False;
@@ -82,7 +90,7 @@ class Usuario
         $estadoCr = $rowCredit["Estado_CR"];
 
         //*Insercion del pago en la base de datos
-        $query = "INSERT INTO abono_credito(Monto_AC,ID_US) VALUES ($monto,$ID_Usuario)";
+        $query = "INSERT INTO abono_credito(Monto_AC,ID_US,ID_CR) VALUES ($monto,$ID_Usuario, $ID_CR)";
         $result = mysqli_query($this->conn, $query);
 
         if (!$result) {

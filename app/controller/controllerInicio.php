@@ -130,7 +130,7 @@ if (isset($_REQUEST['SolicitarNC'])) {
 
     if (!empty($montoNC)) {
 
-        $NuevoCredito = $personamodel->SolicitudNuevaCredito($montoNC, $fechaNC, $estado);
+        $NuevoCredito = $personamodel->SolicitudCredito($estado, $fechaNC, $montoNC, 1);
 
         if ($NuevoCredito) {
             $_SESSION['msg'] = "success('¡Solicitud Exitosa!','Ha solicitado un nuevo credito satisfactoriamente.')";
