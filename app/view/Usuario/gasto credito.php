@@ -189,25 +189,41 @@ if (empty($_SESSION['correo'])) {
                         //TRAER LOS GASTOS DEL USUARIO
                         $ConsultaCr = "SELECT * FROM gasto_credito WHERE ID_US = $IdeUs";
                         $resultConCr = mysqli_query($conn, $ConsultaCr);
+                    
+                        //restante del credito
+                        $sql2 = "SELECT * FROM gasto_credito WHERE ID_US = '$IdeUs'";
+                        $ejecucion = mysqli_query($conn, $sql2);
+                        $row = mysqli_fetch_array($ejecucion);
+                        $gasto_credito = $row['Valor_GC'];
+                        
+                        $Credito_Restante = $creditoTotal - $gasto_credito;
                     }
 
+                    
+
                     ?>
-                    <tr>
-                        <td><strong>Credito Total</strong></td>
-                        <td><strong>$<?= $creditoTotal ?></strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Gastos</strong></td>
-                        <td><strong>Fechas</strong></td>
-                    </tr>
                     <?php
+                    
 
                     $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
                     $resultado = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($resultado) > 0) { ?>
+                        <br><br>
                         <tr>
-                            <td><strong>Estado Credito</strong></td>
+                            <td><strong>Estado Crédito</strong></td>
                             <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Crédito Total</strong></td>
+                            <td><strong>$<?= $creditoTotal ?></strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Crédito Restante</strong></td>
+                            <td><strong>$<?= $Credito_Restante ?></strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gastos</strong></td>
+                            <td><strong>Fechas</strong></td>
                         </tr>
                     <?php }
                     ?>
