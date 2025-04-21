@@ -13,15 +13,15 @@ class Usuario
     }
 
     public function abonoEfectivo($monto, $correo)
-    {   
+    {
         //?Se crea un array asociativo con valores verdaderos
-        for($i = 0; $i<=6; $i++){
+        for ($i = 0; $i <= 6; $i++) {
             $verss["ver$i"] = true;
         }
 
         //*Consulta de credito
         $ConsultaCr = "SELECT c.* from credito c
-                       where c.estado_ACT = 1 and c.Correo_CR = '$correo'; "; 
+                       where c.estado_ACT = 1 and c.Correo_CR = '$correo'; ";
         $resultConCr = mysqli_query($this->conn, $ConsultaCr);
 
 
@@ -38,13 +38,14 @@ class Usuario
 
         $consultaAbono = "SELECT sum(ac.Monto_AC) as MontoSuma FROM abono_credito ac
                           JOIN credito c ON c.ID_CR = ac.ID_CR
-                          WHERE ac.ID_US = $ID_US;";
+                          WHERE ac.ID_US = $ID_US
+                          AND Estado_ACT = 1;";
         $resultAbono2 = mysqli_query($this->conn, $consultaAbono);
         $rowAbono = mysqli_fetch_assoc($resultAbono2);
         $abonoMonto = $rowAbono['MontoSuma'];
 
         $estadoCr = "";
-        
+
 
         //*Verificacion de monto apto
         $resp = ($monto % 100 == 0);

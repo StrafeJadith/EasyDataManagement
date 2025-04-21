@@ -171,19 +171,44 @@ if (empty($_SESSION['correo'])) {
                 <thead>
                     <?php
                     $correo = $_SESSION['correo'];
-                    $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
+                    $ConsultaCr = "SELECT * FROM credito WHERE Correo_CR = '$correo' 
+                                    AND Estado_CR = 'En espera'";
                     $resultConCr = mysqli_query($conn, $ConsultaCr);
-                    $rowCr = mysqli_fetch_array($resultConCr, MYSQLI_ASSOC);
+
+                    $estadoCredito = "Inactivo";
                     $creditoTotal = 0;
                     $fechasCr = "Sin credito realizado";
+                    $CreditoSolicitud = 0;
+
+                    if (mysqli_num_rows($resultConCr) > 0) {
+                        $rowCr = mysqli_fetch_assoc($resultConCr);
+                        $estadoCredito = $rowCr['Estado_CR'];
+                        $creditoTotal = $rowCr['Valor_CR'];
+                        $fechasCr = $rowCr['Fecha_CR'];
+                        $CreditoSolicitud = $rowCr['Estado_ACT'];
+                    }
+                    //$EstadoCredito = "Inactivo";
+                    
+                    $ConsultaCrAct = "SELECT * FROM credito WHERE Correo_CR = '$correo' 
+                                      AND Estado_ACT = 1";
+                    $resultConCrAct = mysqli_query($conn, $ConsultaCrAct);
+
+                    if (mysqli_num_rows($resultConCrAct) > 0) {
+                        $rowCr = mysqli_fetch_assoc($resultConCrAct);
+                        $estadoCredito = $rowCr['Estado_CR'];
+                        $creditoTotal = $rowCr['Valor_CR'];
+                        $fechasCr = $rowCr['Fecha_CR'];
+                        $CreditoSolicitud = $rowCr['Estado_ACT'];
+                    }
 
                     if (!empty($rowCr["Valor_Total"])) {
                         $creditoTotal = $rowCr['Valor_Total'];
                         $fechasCr = $rowCr['Fecha_CR'];
+                        $EstadoCredito = $rowCr["Estado_CR"];
                         //CONSULTAR ID DEL USUARIO
                         $consultarIdAbono = "SELECT ID_US FROM usuarios WHERE Correo_US = '$correo'";
                         $resultIdAbono = mysqli_query($conn, $consultarIdAbono);
-                        $rowAb = mysqli_fetch_array($resultIdAbono, MYSQLI_ASSOC);
+                        $rowAb = mysqli_fetch_assoc($resultIdAbono);
                         $IdeUs = $rowAb['ID_US'];
 
                         //TRAER LOS GASTOS DEL USUARIO
@@ -198,16 +223,19 @@ if (empty($_SESSION['correo'])) {
                     </tr>
                     <tr>
                         <td><strong>Gastos</strong></td>
-                        <td><strong>Fechas</strong></td>
+                        <td><strong><?php ?></strong></td>
                     </tr>
                     <?php
 
                     $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
                     $resultado = mysqli_query($conn, $sql);
+                    while ($row = mysqli_fetch_array($resultado)) {
+                        $estadoCredito = $row['Estado_CR'];
+                    }
                     if (mysqli_num_rows($resultado) > 0) { ?>
                         <tr>
                             <td><strong>Estado Credito</strong></td>
-                            <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+                            <td><strong><?php echo $estadoCredito ?></strong></td>
                         </tr>
                     <?php }
                     ?>
@@ -218,16 +246,7 @@ if (empty($_SESSION['correo'])) {
             <br><br><br>
             <tr>
                 <?php
-                /* consulta para que aparezca el boton*/
-                $CreditoSolicitud = 0;
-                $estadoCredito = 0;
 
-                $sqlCredito = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-                $consulta = mysqli_query($conn, $sqlCredito);
-                while ($row = mysqli_fetch_array($consulta)) {
-                    $CreditoSolicitud = $row['Estado_ACT'];
-                    $estadoCredito = $row['Estado_CR'];
-                }
                 /* solicitud nuevo credito  */
                 if ($CreditoSolicitud == 0 && $estadoCredito == "Aceptado") { ?>
                     <a href="nuevoCredito.php"><button type="button" class="btn">Solicitar un nuevo credito</button></a>
