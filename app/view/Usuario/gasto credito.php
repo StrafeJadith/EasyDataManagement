@@ -213,7 +213,7 @@ if (empty($_SESSION['correo'])) {
                         $resultConCr = mysqli_query($conn, $ConsultaCr);
                     
                         //restante del credito
-                        $sql2 = "SELECT SUM(Valor_GC) AS total FROM gasto_credito WHERE ID_US = $IdeUs";
+                        $sql2 = "SELECT Fecha_GC, SUM(Valor_GC) AS total FROM gasto_credito WHERE ID_US = $IdeUs";
                         $ejecucion = mysqli_query($conn, $sql2);
                         //para taerme los datos de una consulta
                         if ($fila = $ejecucion->fetch_assoc()) {
@@ -234,7 +234,18 @@ if (empty($_SESSION['correo'])) {
                     while ($row = mysqli_fetch_array($resultado)) {
                         $estadoCredito = $row['Estado_CR'];
                     }
-                    if (mysqli_num_rows($resultado) > 0) { ?>
+                    if ($estadoCredito == "En espera") { ?>
+                        <br><br>
+                        <tr>
+                            <td><strong>Estado Crédito</strong></td>
+                            <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+
+                        </tr>
+                        <tr>
+                            <td><strong>Crédito Solicitado</strong></td>
+                            <td><strong>$<?= $creditoTotal ?></strong></td>
+                        </tr>
+                    <?php } else if ($estadoCredito == "Aceptado"){ ?> 
                         <br><br>
                         <tr>
 
@@ -249,10 +260,6 @@ if (empty($_SESSION['correo'])) {
                         <tr>
                             <td><strong>Crédito Restante</strong></td>
                             <td><strong>$<?= $Credito_Restante ?></strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Gastos</strong></td>
-                            <td><strong>Fechas</strong></td>
                         </tr>
                     <?php }
                     ?>
