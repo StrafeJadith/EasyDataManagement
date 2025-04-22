@@ -135,9 +135,10 @@ class Carrito
         $estadoVen = $rowVent['Estado_VENT'];
 
         //**ver estado y total de credito
-        $sqlcr = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-        $resultcr = mysqli_query($this->conn, $sqlcr);
-        $rowEstado = mysqli_fetch_array($resultcr, MYSQLI_ASSOC);
+        $sqlcr = "SELECT * FROM credito WHERE Correo_CR = '$correo' AND Estado_ACT = 1";
+        $resultCr = mysqli_query($this->conn, $sqlcr);
+              
+        $rowEstado = mysqli_fetch_array($resultCr, MYSQLI_ASSOC);
 
         if (empty($rowEstado)) {
             $verss["ver0"] = false;

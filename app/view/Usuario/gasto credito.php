@@ -176,6 +176,7 @@ if (empty($_SESSION['correo'])) {
                     $creditoTotal = 0;
                     $fechasCr = "Sin credito realizado";
                     $CreditoSolicitud = 0;
+                    $Credito_Restante = 0;
 
                     if (mysqli_num_rows($resultConCr) > 0) {
                         $rowCr = mysqli_fetch_assoc($resultConCr);
@@ -229,16 +230,12 @@ if (empty($_SESSION['correo'])) {
                     <?php
                     
 
-                    $sql = "SELECT * FROM credito WHERE Correo_CR = '$correo'";
-                    $resultado = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_array($resultado)) {
-                        $estadoCredito = $row['Estado_CR'];
-                    }
+                    
                     if ($estadoCredito == "En espera") { ?>
                         <br><br>
                         <tr>
                             <td><strong>Estado Crédito</strong></td>
-                            <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+                            <td><strong><?php echo $estadoCredito ?></strong></td>
 
                         </tr>
                         <tr>
@@ -250,7 +247,7 @@ if (empty($_SESSION['correo'])) {
                         <tr>
 
                             <td><strong>Estado Crédito</strong></td>
-                            <td><strong><?php echo $rowCr['Estado_CR'] ?></strong></td>
+                            <td><strong><?php echo $estadoCredito ?></strong></td>
 
                         </tr>
                         <tr>
