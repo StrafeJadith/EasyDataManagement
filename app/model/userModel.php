@@ -63,7 +63,7 @@ class Usuario
         $ID_Usuario = $rowIdUs["ID_US"];
         $ID_CR = $rowIdUs["ID_CR"];
         //*Verificaciones de monto aceptable
-        if (!$resp) {
+        if (!$resp || $resp<0) {
             $verss["ver1"] = False;
             return $verss;
         }
